@@ -1,0 +1,24 @@
+<h1 class="text-2xl font-bold mb-6">Conteudos</h1>
+
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="text-left text-gray-500 border-b bg-gray-50">
+        <th class="p-3">Titulo</th>
+        <th class="p-3">Tipo</th>
+        <th class="p-3">Cliente</th>
+        <th class="p-3">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @content_outputs.each do |co| %>
+        <tr class="border-b hover:bg-gray-50">
+          <td class="p-3"><%= link_to co.title, admin_content_output_path(co), class: "text-blue-600 hover:underline" %></td>
+          <td class="p-3"><%= co.output_type %></td>
+          <td class="p-3"><%= co.content_request.client.business_name %></td>
+          <td class="p-3"><%= co.status %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

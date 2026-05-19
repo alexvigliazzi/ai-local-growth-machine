@@ -1,0 +1,23 @@
+<h1 class="text-2xl font-bold mb-6">Outreach Messages</h1>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="text-left text-gray-500 border-b bg-gray-50">
+        <th class="p-3">Lead</th>
+        <th class="p-3">Canal</th>
+        <th class="p-3">Tipo</th>
+        <th class="p-3">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @outreach_messages.each do |om| %>
+        <tr class="border-b hover:bg-gray-50">
+          <td class="p-3"><%= om.lead.business_name %></td>
+          <td class="p-3"><%= om.channel %></td>
+          <td class="p-3"><%= om.message_type %></td>
+          <td class="p-3"><%= om.status %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

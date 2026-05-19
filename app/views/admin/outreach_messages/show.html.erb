@@ -1,0 +1,9 @@
+<h1 class="text-2xl font-bold mb-6">Outreach Message</h1>
+<div class="bg-white rounded-lg shadow-sm p-6">
+  <p><strong>Lead:</strong> <%= @outreach_message.lead.business_name %></p>
+  <p><strong>Canal:</strong> <%= @outreach_message.channel %></p>
+  <p><strong>Tipo:</strong> <%= @outreach_message.message_type %></p>
+  <p><strong>Status:</strong> <%= @outreach_message.status %></p>
+  <div class="mt-4 bg-gray-50 p-4 rounded"><%= simple_format(@outreach_message.message) %></div>
+</div>
+<%= link_to "&larr; Voltar".html_safe, admin_outreach_messages_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>

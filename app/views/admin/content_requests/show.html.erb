@@ -1,0 +1,9 @@
+<h1 class="text-2xl font-bold mb-6">Pedido de Conteudo</h1>
+<div class="bg-white rounded-lg shadow-sm p-6">
+  <p><strong>Cliente:</strong> <%= @content_request.client.business_name %></p>
+  <p><strong>Objetivo:</strong> <%= @content_request.objective %></p>
+  <p><strong>Tom:</strong> <%= @content_request.tone %></p>
+  <p><strong>Servicos:</strong> <%= @content_request.services %></p>
+  <p><strong>Status:</strong> <%= @content_request.status %></p>
+</div>
+<%= link_to "&larr; Voltar".html_safe, admin_content_requests_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>

@@ -1,0 +1,9 @@
+<h1 class="text-2xl font-bold mb-6"><%= @report.title %></h1>
+<div class="bg-white rounded-lg shadow-sm p-6">
+  <p class="text-gray-500 text-sm mb-4">
+    Cliente: <%= @report.client.business_name %> |
+    Link publico: <%= link_to public_report_url(@report.token), public_report_path(@report.token), target: "_blank", class: "text-blue-600" %>
+  </p>
+  <div class="prose max-w-none"><%= simple_format(@report.content) %></div>
+</div>
+<%= link_to "&larr; Voltar".html_safe, admin_reports_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>

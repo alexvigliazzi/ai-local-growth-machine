@@ -1,0 +1,41 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold"><%= @lead.business_name %></h1>
+  <%= link_to "Editar", edit_admin_lead_path(@lead), class: "bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-600 text-sm" %>
+</div>
+
+<div class="bg-white rounded-lg shadow-sm p-6 space-y-4">
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <p class="text-gray-500 text-sm">Nicho</p>
+      <p class="font-medium"><%= @lead.niche %></p>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm">Cidade</p>
+      <p class="font-medium"><%= @lead.city %></p>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm">WhatsApp</p>
+      <p class="font-medium"><%= @lead.whatsapp || "—" %></p>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm">Email</p>
+      <p class="font-medium"><%= @lead.email || "—" %></p>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm">Instagram</p>
+      <p class="font-medium"><%= @lead.instagram_url || "—" %></p>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm">Status</p>
+      <p class="font-medium"><%= @lead.status %></p>
+    </div>
+  </div>
+  <% if @lead.notes.present? %>
+    <div>
+      <p class="text-gray-500 text-sm">Notas</p>
+      <p class="mt-1"><%= simple_format(@lead.notes) %></p>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "&larr; Voltar".html_safe, admin_leads_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>
