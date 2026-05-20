@@ -11,6 +11,12 @@ require "bootsnap/setup" # Speed up boot time by caching expensive operations.
 # (Rake, Puma, rails server, etc.), so this is the only safe location.
 if (db_url = ENV["DATABASE_URL"])
   ENV["DATABASE_URL"] = db_url.sub(%r{^((?:postgresql|postgres)://[^:@]+:)([^@]+)(@)}) do
-    "#{$1}#{$2.gsub("?", "%3F").gsub("#", "%23").gsub("@", "%40")}#{$3}"
+    # Capture match groups into locals BEFORE any gsub call.
+    # In Ruby, inner gsub/match calls overwrite $1/$2/$3 global vars,
+    # so $3 would become nil and the '@' separator would be dropped.
+    prefix   = $1
+    password = $2
+    at_sign  = $3
+    "#{prefix}#{password.gsub("?", "%3F").gsub("#", "%23").gsub("@", "%40")}#{at_sign}"
   end
 end
