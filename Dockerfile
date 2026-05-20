@@ -56,8 +56,10 @@ RUN chmod +x bin/* && \
     sed -i "s/\r$//g" bin/* && \
     sed -i 's/ruby\.exe$/ruby/' bin/*
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# Build Tailwind CSS first (output goes to app/assets/builds/ which is gitignored)
+# then precompile all assets so Propshaft picks up tailwind.css
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails tailwindcss:build && \
+    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 
 

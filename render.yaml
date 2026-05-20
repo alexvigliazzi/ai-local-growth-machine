@@ -1,16 +1,25 @@
+databases:
+  - name: ai-local-growth-machine-db
+    plan: free
+    databaseName: growth_machine_production
+    user: growth_machine
+
 services:
   - type: web
-    name: ai-local-growth-machine
+    name: ai-local-growth-machine-docker
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    dockerCommand: bundle exec rails db:migrate && bundle exec puma -C config/puma.rb
+    # Run migrations before new version goes live (zero-downtime)
+    preDeployCommand: bundle exec rails db:migrate
     healthCheckPath: /up
     autoDeploy: true
     envVars:
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: ai-local-growth-machine-db
+          property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
       - key: SECRET_KEY_BASE
