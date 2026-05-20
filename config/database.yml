@@ -75,18 +75,4 @@ test:
 #
 production:
   <<: *default
-  <%
-    _db_url = ENV["DATABASE_URL"].to_s
-    _m = _db_url.match(%r{^(?:postgresql|postgres)://([^:@]+):(.+)@([^:/]+):(\d+)/([^?#\s]+)})
-    _db_user = _m ? _m[1] : nil
-    _db_pass = _m ? _m[2] : nil
-    _db_host = _m ? _m[3] : nil
-    _db_port = _m ? _m[4].to_i : nil
-    _db_name = _m ? _m[5] : nil
-  %>
-  host:     <%= _db_host %>
-  port:     <%= _db_port %>
-  database: <%= _db_name %>
-  username: <%= _db_user %>
-  password: "<%= _db_pass %>"
-  sslmode:  require
+  url: <%= ENV["DATABASE_URL"] %>
