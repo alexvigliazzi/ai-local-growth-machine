@@ -1,9 +1,82 @@
-<h1 class="text-2xl font-bold mb-6">Pedido de Conteudo</h1>
-<div class="bg-white rounded-lg shadow-sm p-6">
-  <p><strong>Cliente:</strong> <%= @content_request.client.business_name %></p>
-  <p><strong>Objetivo:</strong> <%= @content_request.objective %></p>
-  <p><strong>Tom:</strong> <%= @content_request.tone %></p>
-  <p><strong>Servicos:</strong> <%= @content_request.services %></p>
-  <p><strong>Status:</strong> <%= @content_request.status %></p>
+<div class="mb-8 flex items-center gap-4">
+  <%= link_to admin_content_requests_path, class: "p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors" do %>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+  <% end %>
+  <h1 class="text-2xl font-bold text-slate-900">Pedido de Conteudo</h1>
 </div>
-<%= link_to "&larr; Voltar".html_safe, admin_content_requests_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="lg:col-span-2 space-y-8">
+    <div class="admin-card p-8">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 border-b pb-2">Briefing do Cliente</h3>
+      <div class="space-y-6">
+        <div>
+          <label class="block text-xs text-slate-400 mb-1 font-bold">Objetivo Principal</label>
+          <p class="text-lg text-slate-900 leading-relaxed"><%= @content_request.objective %></p>
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1 font-bold">Servicos para Destacar</label>
+          <p class="text-slate-700 leading-relaxed"><%= @content_request.services %></p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-slate-400 mb-1 font-bold">Tom de Voz</label>
+            <p class="text-slate-900 font-medium"><%= @content_request.tone&.humanize %></p>
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1 font-bold">Referencias</label>
+            <p class="text-slate-900 font-medium"><%= @content_request.references %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conteudos Gerados -->
+    <div class="admin-card overflow-hidden">
+      <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+        <h3 class="font-bold text-slate-900">Saidas de Conteudo (Outputs)</h3>
+      </div>
+      <div class="divide-y divide-slate-100">
+        <% @content_request.content_outputs.each do |output| %>
+          <div class="p-6 flex justify-between items-center">
+            <div>
+              <div class="font-bold text-sm"><%= output.title %></div>
+              <div class="text-xs text-slate-400"><%= output.output_type&.humanize %></div>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest bg-green-100 text-green-700"><%= output.status %></span>
+              <%= link_to edit_admin_content_output_path(output), class: "text-slate-400 hover:text-slate-900" do %>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-8">
+    <div class="admin-card p-6 bg-slate-900 text-white">
+      <h3 class="text-xs font-bold text-white/40 uppercase tracking-widest mb-4">Status da Producao</h3>
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+          <span class="text-sm font-medium"><%= @content_request.status&.humanize %></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-card p-6 border-blue-100">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Cliente</h3>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
+          <%= @content_request.client.business_name[0] %>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-slate-900"><%= @content_request.client.business_name %></div>
+          <%= link_to "Ver Perfil", admin_client_path(@content_request.client), class: "text-xs text-blue-600 font-medium hover:underline" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

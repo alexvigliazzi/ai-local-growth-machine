@@ -1,9 +1,35 @@
-<h1 class="text-2xl font-bold mb-6">Outreach Message</h1>
-<div class="bg-white rounded-lg shadow-sm p-6">
-  <p><strong>Lead:</strong> <%= @outreach_message.lead.business_name %></p>
-  <p><strong>Canal:</strong> <%= @outreach_message.channel %></p>
-  <p><strong>Tipo:</strong> <%= @outreach_message.message_type %></p>
-  <p><strong>Status:</strong> <%= @outreach_message.status %></p>
-  <div class="mt-4 bg-gray-50 p-4 rounded"><%= simple_format(@outreach_message.message) %></div>
+<div class="mb-8 flex items-center gap-4">
+  <%= link_to admin_outreach_messages_path, class: "p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors" do %>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+  <% end %>
+  <h1 class="text-2xl font-bold text-slate-900">Mensagem de Outreach</h1>
 </div>
-<%= link_to "&larr; Voltar".html_safe, admin_outreach_messages_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>
+
+<div class="max-w-3xl">
+  <div class="admin-card overflow-hidden">
+    <div class="p-8 border-b border-slate-100 bg-slate-50/30">
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Destinatario</h3>
+          <div class="text-xl font-bold text-slate-900"><%= @outreach_message.lead.business_name %></div>
+          <div class="text-sm text-slate-500"><%= @outreach_message.channel&.humanize %> — <%= @outreach_message.created_at.strftime("%d/%m/%Y as %H:%M") %></div>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase"><%= @outreach_message.status %></span>
+      </div>
+    </div>
+
+    <div class="p-8">
+      <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Conteudo da Mensagem</h4>
+      <div class="bg-slate-900 text-slate-200 p-6 rounded-2xl font-mono text-sm leading-relaxed whitespace-pre-wrap">
+        <%= @outreach_message.message %>
+      </div>
+
+      <div class="mt-8 pt-8 border-t border-slate-100 flex gap-4">
+        <% if @outreach_message.lead.whatsapp.present? %>
+          <%= link_to "Enviar via WhatsApp", "https://wa.me/#{@outreach_message.lead.whatsapp.gsub(/\D/, '')}?text=#{CGI.escape(@outreach_message.message)}", target: "_blank", class: "px-6 py-3 bg-green-500 text-white font-bold rounded-lg shadow-lg shadow-green-500/20 flex items-center gap-2" %>
+        <% end %>
+        <button class="px-6 py-3 bg-slate-100 text-slate-600 font-bold rounded-lg">Marcar como Enviada</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,46 @@
-<h1 class="text-2xl font-bold mb-6"><%= @report.title %></h1>
-<div class="bg-white rounded-lg shadow-sm p-6">
-  <p class="text-gray-500 text-sm mb-4">
-    Cliente: <%= @report.client.business_name %> |
-    Link publico: <%= link_to public_report_url(@report.token), public_report_path(@report.token), target: "_blank", class: "text-blue-600" %>
-  </p>
-  <div class="prose max-w-none"><%= simple_format(@report.content) %></div>
+<div class="mb-8 flex items-center gap-4">
+  <%= link_to admin_reports_path, class: "p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors" do %>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+  <% end %>
+  <h1 class="text-2xl font-bold text-slate-900">Relatorio Executivo</h1>
 </div>
-<%= link_to "&larr; Voltar".html_safe, admin_reports_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="lg:col-span-2 space-y-8">
+    <div class="admin-card p-8">
+      <div class="flex justify-between items-center mb-8 border-b pb-4">
+        <h2 class="text-2xl font-bold text-slate-900"><%= @report.title %></h2>
+        <div class="text-right">
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Token Publico</div>
+          <code class="text-xs bg-slate-100 px-2 py-1 rounded text-blue-600"><%= @report.token %></code>
+        </div>
+      </div>
+
+      <div class="prose prose-slate max-w-none">
+        <%= simple_format(@report.content, class: "text-slate-700 leading-relaxed") %>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-8">
+    <div class="admin-card p-6">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Acoes</h3>
+      <div class="grid grid-cols-1 gap-2">
+        <%= link_to "Visualizar Como Cliente", "/r/#{@report.token}", target: "_blank", class: "w-full py-3 bg-blue-600 text-white text-center font-bold rounded-xl shadow-lg shadow-blue-500/20" %>
+      </div>
+    </div>
+
+    <div class="admin-card p-6 border-blue-100">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Proprietario</h3>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 font-bold">
+          <%= @report.client.business_name[0] %>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-slate-900"><%= @report.client.business_name %></div>
+          <%= link_to "Ver Cliente", admin_client_path(@report.client), class: "text-xs text-slate-500 hover:underline" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

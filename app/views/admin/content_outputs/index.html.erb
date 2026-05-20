@@ -1,24 +1,44 @@
-<h1 class="text-2xl font-bold mb-6">Conteudos</h1>
+<div class="flex justify-between items-center mb-8">
+  <h1 class="text-2xl font-bold text-slate-900">Conteudos Produzidos</h1>
+</div>
 
-<div class="bg-white rounded-lg shadow-sm overflow-hidden">
-  <table class="w-full text-sm">
-    <thead>
-      <tr class="text-left text-gray-500 border-b bg-gray-50">
-        <th class="p-3">Titulo</th>
-        <th class="p-3">Tipo</th>
-        <th class="p-3">Cliente</th>
-        <th class="p-3">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @content_outputs.each do |co| %>
-        <tr class="border-b hover:bg-gray-50">
-          <td class="p-3"><%= link_to co.title, admin_content_output_path(co), class: "text-blue-600 hover:underline" %></td>
-          <td class="p-3"><%= co.output_type %></td>
-          <td class="p-3"><%= co.content_request.client.business_name %></td>
-          <td class="p-3"><%= co.status %></td>
+<div class="admin-card overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
+          <th class="px-6 py-4">Titulo</th>
+          <th class="px-6 py-4">Tipo</th>
+          <th class="px-6 py-4">Status</th>
+          <th class="px-6 py-4 text-right">Acoes</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <% @content_outputs.each do |output| %>
+          <tr class="hover:bg-slate-50/50 transition-colors">
+            <td class="px-6 py-4">
+              <div class="font-bold text-slate-900 text-sm"><%= output.title %></div>
+              <div class="text-xs text-slate-500"><%= output.content_request.client.business_name %></div>
+            </td>
+            <td class="px-6 py-4 text-xs text-slate-600 font-medium">
+              <%= output.output_type&.humanize %>
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                <%= case output.status
+                    when 'draft' then 'bg-slate-100 text-slate-600'
+                    when 'review' then 'bg-yellow-100 text-yellow-700'
+                    when 'approved' then 'bg-green-100 text-green-700'
+                    end %>">
+                <%= output.status&.humanize %>
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <%= link_to "Editar", edit_admin_content_output_path(output), class: "text-blue-600 font-bold text-xs hover:underline" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

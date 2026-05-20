@@ -1,24 +1,49 @@
-<h1 class="text-2xl font-bold mb-6">Pedidos de Conteudo</h1>
+<div class="flex justify-between items-center mb-8">
+  <h1 class="text-2xl font-bold text-slate-900">Pedidos de Conteudo</h1>
+  <div class="flex gap-2">
+    <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-bold uppercase tracking-widest"><%= @pending_requests %> Pendentes</span>
+  </div>
+</div>
 
-<div class="bg-white rounded-lg shadow-sm overflow-hidden">
-  <table class="w-full text-sm">
-    <thead>
-      <tr class="text-left text-gray-500 border-b bg-gray-50">
-        <th class="p-3">Cliente</th>
-        <th class="p-3">Objetivo</th>
-        <th class="p-3">Status</th>
-        <th class="p-3">Data</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @content_requests.each do |cr| %>
-        <tr class="border-b hover:bg-gray-50">
-          <td class="p-3"><%= cr.client.business_name %></td>
-          <td class="p-3"><%= cr.objective&.truncate(60) || "—" %></td>
-          <td class="p-3"><%= cr.status %></td>
-          <td class="p-3 text-gray-500"><%= cr.created_at.strftime("%d/%m/%Y") %></td>
+<div class="admin-card overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
+          <th class="px-6 py-4">Cliente</th>
+          <th class="px-6 py-4">Objetivo</th>
+          <th class="px-6 py-4">Tom</th>
+          <th class="px-6 py-4">Status</th>
+          <th class="px-6 py-4 text-right">Acoes</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <% @content_requests.each do |request| %>
+          <tr class="hover:bg-slate-50/50 transition-colors">
+            <td class="px-6 py-4">
+              <div class="font-bold text-slate-900 text-sm"><%= request.client.business_name %></div>
+              <div class="text-xs text-slate-500"><%= request.created_at.strftime("%d/%m/%y") %></div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-slate-600 truncate max-w-xs"><%= request.objective %></div>
+            </td>
+            <td class="px-6 py-4 text-xs text-slate-500"><%= request.tone&.humanize %></td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                <%= case request.status
+                    when 'pending' then 'bg-orange-100 text-orange-700'
+                    when 'in_progress' then 'bg-blue-100 text-blue-700'
+                    when 'completed' then 'bg-green-100 text-green-700'
+                    end %>">
+                <%= request.status&.humanize %>
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <%= link_to "Produzir", admin_content_request_path(request), class: "px-3 py-1 bg-slate-100 text-slate-900 font-bold text-xs rounded-lg hover:bg-slate-200 transition-colors" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

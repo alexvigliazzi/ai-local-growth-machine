@@ -1,119 +1,169 @@
-<div class="min-h-screen bg-gray-50 py-12 px-6">
-  <div class="max-w-2xl mx-auto">
-    <h1 class="text-3xl font-bold text-gray-800 mb-2">Briefing</h1>
-    <p class="text-gray-600 mb-8">Conte sobre seu negocio. Leva menos de 2 minutos.</p>
+<div class="max-w-3xl mx-auto py-12 px-6">
+  <div class="text-center mb-12">
+    <h1 class="text-3xl font-bold mb-2">Prepare o seu Piloto</h1>
+    <p class="text-slate-500">Conte-nos sobre seu negocio para gerarmos o melhor conteudo.</p>
+  </div>
 
-    <%= form_with url: briefing_path, method: :post, class: "space-y-6 bg-white p-8 rounded-lg shadow-sm" do |f| %>
-      <% if @lead.errors.any? %>
-        <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
-          <ul class="list-disc list-inside">
-            <% @lead.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
+  <div class="glass p-8 md:p-12 rounded-[2.5rem] shadow-xl">
+    <!-- Progress Indicator -->
+    <div class="flex gap-2 mb-10">
+      <div class="step-indicator h-1.5 flex-1 rounded-full bg-blue-600 transition-all duration-500"></div>
+      <div class="step-indicator h-1.5 flex-1 rounded-full bg-slate-200 transition-all duration-500"></div>
+      <div class="step-indicator h-1.5 flex-1 rounded-full bg-slate-200 transition-all duration-500"></div>
+    </div>
 
-      <!-- Dados do negocio -->
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700 mb-4">Sobre o negocio</h2>
-        <div class="grid md:grid-cols-2 gap-4">
+    <%= form_with url: "/briefing", method: :post, id: "briefing-form" do |f| %>
+
+      <!-- Step 1: Seu Negocio -->
+      <div class="step-content" data-step="1">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-sm">1</span>
+          Sobre seu negocio
+        </h2>
+
+        <div class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nome do negocio *</label>
-            <%= f.text_field :business_name, value: @lead.business_name,
-                class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-                placeholder: "Ex: Moto Center Silva" %>
+            <%= f.label :business_name, "Nome do negocio", class: "block text-sm font-semibold mb-2" %>
+            <%= f.text_field :business_name, placeholder: "Ex: Moto Wind", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all", required: true %>
           </div>
+
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Cidade *</label>
-            <%= f.text_field :city, value: @lead.city,
-                class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-                placeholder: "Ex: Campinas - SP" %>
+            <%= f.label :city, "Cidade", class: "block text-sm font-semibold mb-2" %>
+            <%= f.text_field :city, placeholder: "Ex: Botucatu - SP", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all", required: true %>
+          </div>
+
+          <div>
+            <%= f.label :niche, "Seu nicho", class: "block text-sm font-semibold mb-2" %>
+            <%= f.select :niche,
+                options_for_select([['Oficina / Lojas de Moto', 'oficina_moto'], ['Estetica e Beleza', 'estetica'], ['Odontologia', 'odonto'], ['Outro', 'outro']]),
+                {},
+                class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none" %>
+          </div>
+        </div>
+
+        <div class="mt-10 flex justify-end">
+          <button type="button" onclick="nextStep(1)" class="px-8 py-4 rounded-full btn-primary font-bold">Continuar</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Contato -->
+      <div class="step-content hidden" data-step="2">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-sm">2</span>
+          Dados de contato
+        </h2>
+
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <%= f.label :contact_name, "Seu nome", class: "block text-sm font-semibold mb-2" %>
+              <%= f.text_field :contact_name, placeholder: "Ex: Pedro Silva", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+            </div>
+            <div>
+              <%= f.label :whatsapp, "WhatsApp", class: "block text-sm font-semibold mb-2" %>
+              <%= f.text_field :whatsapp, placeholder: "(11) 99999-9999", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all", required: true %>
+            </div>
+          </div>
+
+          <div>
+            <%= f.label :email, "E-mail", class: "block text-sm font-semibold mb-2" %>
+            <%= f.email_field :email, placeholder: "seu@email.com", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+          </div>
+
+          <div>
+            <%= f.label :instagram_url, "Instagram do negocio", class: "block text-sm font-semibold mb-2" %>
+            <%= f.text_field :instagram_url, placeholder: "@seunegocio", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+          </div>
+        </div>
+
+        <div class="mt-10 flex justify-between">
+          <button type="button" onclick="prevStep(2)" class="px-8 py-4 rounded-full border border-slate-200 font-bold hover:bg-slate-50 transition-colors">Voltar</button>
+          <button type="button" onclick="nextStep(2)" class="px-8 py-4 rounded-full btn-primary font-bold">Continuar</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Conteudo -->
+      <div class="step-content hidden" data-step="3">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-sm">3</span>
+          Sobre o conteudo
+        </h2>
+
+        <div class="space-y-6">
+          <div>
+            <%= f.label :objective, "Qual seu principal objetivo?", class: "block text-sm font-semibold mb-2" %>
+            <%= f.text_area :objective, placeholder: "Ex: Atrair novos clientes para revisao de freios", rows: 3, class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+          </div>
+
+          <div>
+            <%= f.label :services, "Quais servicos quer destacar?", class: "block text-sm font-semibold mb-2" %>
+            <%= f.text_area :services, placeholder: "Ex: Troca de oleo, Pneus, Escapamento", rows: 3, class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <%= f.label :tone, "Tom de voz", class: "block text-sm font-semibold mb-2" %>
+              <%= f.select :tone,
+                  options_for_select([['Profissional', 'profissional'], ['Descontraido', 'descontraido'], ['Tecnico', 'tecnico'], ['Amigavel', 'amigavel']]),
+                  {},
+                  class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none" %>
+            </div>
+            <div>
+              <%= f.label :references, "Perfis que admira", class: "block text-sm font-semibold mb-2" %>
+              <%= f.text_field :references, placeholder: "@perfil.exemplo", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10 flex justify-between items-center">
+          <button type="button" onclick="prevStep(3)" class="px-8 py-4 rounded-full border border-slate-200 font-bold hover:bg-slate-50 transition-colors">Voltar</button>
+          <div class="text-right">
+            <p class="text-xs text-slate-400 mb-2">Quase la! Ao enviar, analisaremos seus dados.</p>
+            <%= f.submit "Enviar briefing", class: "px-10 py-4 rounded-full btn-primary font-bold cursor-pointer" %>
           </div>
         </div>
       </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Nicho *</label>
-        <select name="niche" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          <option value="">Selecione...</option>
-          <option value="oficina_moto">Oficina / Motos</option>
-          <option value="estetica_beleza">Estetica / Beleza</option>
-          <option value="odontologia">Odontologia</option>
-          <option value="outro">Outro</option>
-        </select>
-      </div>
-
-      <!-- Contato -->
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700 mb-4">Contato</h2>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Seu nome</label>
-            <input type="text" name="contact_name"
-                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                   placeholder="Ex: Carlos Silva">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp *</label>
-            <%= f.text_field :whatsapp, value: @lead.whatsapp,
-                class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-                placeholder: "(19) 99999-9999" %>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <%= f.text_field :email, value: @lead.email,
-                class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-                placeholder: "email@exemplo.com" %>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Instagram do negocio</label>
-            <%= f.text_field :instagram_url, value: @lead.instagram_url,
-                class: "w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-                placeholder: "@motocentersilva" %>
-          </div>
-        </div>
-      </div>
-
-      <!-- Conteudo -->
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700 mb-4">Sobre o conteudo</h2>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">O que voce quer alcançar com conteudo?</label>
-          <textarea name="objective" rows="3"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Ex: Atrair mais clientes para a oficina, mostrar os servicos..."></textarea>
-        </div>
-        <div class="mt-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Principais servicos</label>
-          <textarea name="services" rows="2"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Ex: Manutencao preventiva, customizacao, troca de oleo..."></textarea>
-        </div>
-        <div class="mt-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Tom de voz preferido</label>
-          <select name="tone" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <option value="profissional">Profissional</option>
-            <option value="descontraido">Descontraido</option>
-            <option value="tecnico">Tecnico / Educativo</option>
-            <option value="amigavel">Amigavel / Proximo</option>
-          </select>
-        </div>
-        <div class="mt-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Perfis que voce admira (opcional)</label>
-          <textarea name="references" rows="2"
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Ex: @motomack, @barbeariavip..."></textarea>
-        </div>
-      </div>
-
-      <div>
-        <button type="submit"
-                class="w-full bg-blue-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition text-lg">
-          Enviar briefing &rarr;
-        </button>
-        <p class="text-gray-500 text-sm text-center mt-2">Voce recebera o conteudo em ate 7 dias.</p>
-      </div>
     <% end %>
   </div>
 </div>
+
+<script>
+  function nextStep(current) {
+    const indicators = document.querySelectorAll('.step-indicator');
+    const contents = document.querySelectorAll('.step-content');
+
+    const currentContent = document.querySelector(`.step-content[data-step="${current}"]`);
+    const inputs = currentContent.querySelectorAll('input[required]');
+    let valid = true;
+    inputs.forEach(input => {
+      if (!input.value) {
+        input.classList.add('border-red-500');
+        valid = false;
+      } else {
+        input.classList.remove('border-red-500');
+      }
+    });
+
+    if (!valid) return;
+
+    contents[current - 1].classList.add('hidden');
+    contents[current].classList.remove('hidden');
+    indicators[current].classList.remove('bg-slate-200');
+    indicators[current].classList.add('bg-blue-600');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function prevStep(current) {
+    const indicators = document.querySelectorAll('.step-indicator');
+    const contents = document.querySelectorAll('.step-content');
+
+    contents[current - 1].classList.add('hidden');
+    contents[current - 2].classList.remove('hidden');
+    indicators[current - 1].classList.remove('bg-blue-600');
+    indicators[current - 1].classList.add('bg-slate-200');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>

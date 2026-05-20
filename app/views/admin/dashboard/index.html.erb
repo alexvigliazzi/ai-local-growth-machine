@@ -1,63 +1,96 @@
-<h1 class="text-2xl font-bold mb-8">Dashboard</h1>
+<header class="flex justify-between items-end mb-10">
+  <div>
+    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
+    <p class="text-slate-500 text-sm">Bem-vindo ao centro de comando da Growth Machine.</p>
+  </div>
+  <div class="text-sm font-medium text-slate-500">
+    <%= Time.current.strftime("%d de %B, %Y") %>
+  </div>
+</header>
 
-<!-- KPIs -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-  <div class="bg-white p-6 rounded-lg shadow-sm">
-    <p class="text-gray-500 text-sm">Leads</p>
-    <p class="text-3xl font-bold"><%= @leads_count %></p>
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+  <div class="admin-card p-6">
+    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Leads</div>
+    <div class="flex items-baseline gap-2">
+      <span class="text-3xl font-bold text-slate-900"><%= @leads_count %></span>
+    </div>
   </div>
-  <div class="bg-white p-6 rounded-lg shadow-sm">
-    <p class="text-gray-500 text-sm">Clientes</p>
-    <p class="text-3xl font-bold"><%= @clients_count %></p>
+
+  <div class="admin-card p-6">
+    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Clientes</div>
+    <div class="flex items-baseline gap-2">
+      <span class="text-3xl font-bold text-slate-900"><%= @clients_count %></span>
+      <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Ativos</span>
+    </div>
   </div>
-  <div class="bg-white p-6 rounded-lg shadow-sm">
-    <p class="text-gray-500 text-sm">Pedidos Pendentes</p>
-    <p class="text-3xl font-bold"><%= @pending_requests %></p>
+
+  <div class="admin-card p-6">
+    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pedidos Pendentes</div>
+    <div class="flex items-baseline gap-2">
+      <span class="text-3xl font-bold text-orange-600"><%= @pending_requests %></span>
+      <span class="text-xs font-bold text-slate-400">Aguardando</span>
+    </div>
   </div>
-  <div class="bg-white p-6 rounded-lg shadow-sm">
-    <p class="text-gray-500 text-sm">Conteudos Gerados</p>
-    <p class="text-3xl font-bold"><%= @outputs_count %></p>
+
+  <div class="admin-card p-6">
+    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Conteudos Gerados</div>
+    <div class="flex items-baseline gap-2">
+      <span class="text-3xl font-bold text-slate-900"><%= @outputs_count %></span>
+      <span class="text-xs font-bold text-slate-400">Total</span>
+    </div>
   </div>
 </div>
 
-<!-- Recent Leads -->
-<div class="bg-white rounded-lg shadow-sm p-6">
-  <h2 class="text-lg font-semibold mb-4">Leads Recentes</h2>
-  <% if @recent_leads.any? %>
-    <table class="w-full text-sm">
+<!-- Recent Leads Table -->
+<div class="admin-card overflow-hidden">
+  <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+    <h3 class="font-bold text-slate-900 text-lg">Leads Recentes</h3>
+    <a href="<%= admin_leads_path %>" class="text-blue-600 text-sm font-bold hover:underline">Ver todos</a>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
       <thead>
-        <tr class="text-left text-gray-500 border-b">
-          <th class="pb-2">Negocio</th>
-          <th class="pb-2">Nicho</th>
-          <th class="pb-2">Cidade</th>
-          <th class="pb-2">Status</th>
-          <th class="pb-2">Data</th>
+        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
+          <th class="px-6 py-4">Negocio</th>
+          <th class="px-6 py-4">Nicho</th>
+          <th class="px-6 py-4">Cidade</th>
+          <th class="px-6 py-4">Status</th>
+          <th class="px-6 py-4 text-right">Data</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="divide-y divide-slate-100">
         <% @recent_leads.each do |lead| %>
-          <tr class="border-b last:border-0">
-            <td class="py-2"><%= link_to lead.business_name, admin_lead_path(lead), class: "text-blue-600 hover:underline" %></td>
-            <td class="py-2"><%= lead.niche %></td>
-            <td class="py-2"><%= lead.city %></td>
-            <td class="py-2">
-              <span class="px-2 py-1 rounded-full text-xs font-medium
-                <%= case lead.status
-                    when 'new' then 'bg-blue-100 text-blue-700'
-                    when 'contacted' then 'bg-yellow-100 text-yellow-700'
-                    when 'converted' then 'bg-green-100 text-green-700'
-                    when 'lost' then 'bg-red-100 text-red-700'
-                    else 'bg-gray-100 text-gray-700'
-                    end %>">
-                <%= lead.status %>
-              </span>
+          <tr class="hover:bg-slate-50/50 transition-colors">
+            <td class="px-6 py-4">
+              <div class="font-bold text-slate-900 text-sm"><%= lead.business_name %></div>
+              <div class="text-xs text-slate-500"><%= lead.email %></div>
             </td>
-            <td class="py-2 text-gray-500"><%= lead.created_at.strftime("%d/%m") %></td>
+            <td class="px-6 py-4">
+              <span class="text-xs text-slate-600 font-medium"><%= lead.niche&.humanize %></span>
+            </td>
+            <td class="px-6 py-4">
+              <span class="text-xs text-slate-600"><%= lead.city %></span>
+            </td>
+            <td class="px-6 py-4">
+              <% case lead.status %>
+              <% when 'new' %>
+                <span class="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider">Novo</span>
+              <% when 'contacted' %>
+                <span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 text-[10px] font-bold uppercase tracking-wider">Contatado</span>
+              <% when 'converted' %>
+                <span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider">Convertido</span>
+              <% when 'lost' %>
+                <span class="px-2 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wider">Perdido</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 text-right text-xs text-slate-400">
+              <%= lead.created_at.strftime("%d/%m/%y") %>
+            </td>
           </tr>
         <% end %>
       </tbody>
     </table>
-  <% else %>
-    <p class="text-gray-500">Nenhum lead ainda. <%= link_to "Ver landing page", root_path, class: "text-blue-600" %>.</p>
-  <% end %>
+  </div>
 </div>

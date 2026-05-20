@@ -1,41 +1,79 @@
-<div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold"><%= @lead.business_name %></h1>
-  <%= link_to "Editar", edit_admin_lead_path(@lead), class: "bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-600 text-sm" %>
+<div class="mb-8 flex items-center gap-4">
+  <%= link_to admin_leads_path, class: "p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors" do %>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+  <% end %>
+  <h1 class="text-2xl font-bold text-slate-900">Lead: <%= @lead.business_name %></h1>
 </div>
 
-<div class="bg-white rounded-lg shadow-sm p-6 space-y-4">
-  <div class="grid md:grid-cols-2 gap-4">
-    <div>
-      <p class="text-gray-500 text-sm">Nicho</p>
-      <p class="font-medium"><%= @lead.niche %></p>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="lg:col-span-2 space-y-8">
+    <div class="admin-card p-8">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 border-b pb-2">Informacoes do Negocio</h3>
+      <div class="grid grid-cols-2 gap-y-6">
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Nome</label>
+          <p class="font-bold"><%= @lead.business_name %></p>
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Nicho</label>
+          <p class="font-medium"><%= @lead.niche&.humanize %></p>
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Cidade</label>
+          <p class="font-medium"><%= @lead.city %></p>
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Status Atual</label>
+          <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700">
+            <%= @lead.status&.humanize %>
+          </span>
+        </div>
+      </div>
     </div>
-    <div>
-      <p class="text-gray-500 text-sm">Cidade</p>
-      <p class="font-medium"><%= @lead.city %></p>
-    </div>
-    <div>
-      <p class="text-gray-500 text-sm">WhatsApp</p>
-      <p class="font-medium"><%= @lead.whatsapp || "—" %></p>
-    </div>
-    <div>
-      <p class="text-gray-500 text-sm">Email</p>
-      <p class="font-medium"><%= @lead.email || "—" %></p>
-    </div>
-    <div>
-      <p class="text-gray-500 text-sm">Instagram</p>
-      <p class="font-medium"><%= @lead.instagram_url || "—" %></p>
-    </div>
-    <div>
-      <p class="text-gray-500 text-sm">Status</p>
-      <p class="font-medium"><%= @lead.status %></p>
+
+    <div class="admin-card p-8">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 border-b pb-2">Dados de Contato</h3>
+      <div class="space-y-4">
+        <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
+          <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400">WhatsApp</div>
+            <div class="font-bold"><%= @lead.whatsapp %></div>
+          </div>
+          <% if @lead.whatsapp.present? %>
+            <%= link_to "Abrir Chat", "https://wa.me/#{@lead.whatsapp.gsub(/\D/, '')}", target: "_blank", class: "ml-auto px-4 py-2 bg-green-500 text-white text-xs font-bold rounded-lg" %>
+          <% end %>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-4 border border-slate-100 rounded-xl">
+            <div class="text-xs text-slate-400">E-mail</div>
+            <div class="text-sm font-medium"><%= @lead.email %></div>
+          </div>
+          <div class="p-4 border border-slate-100 rounded-xl">
+            <div class="text-xs text-slate-400">Instagram</div>
+            <div class="text-sm font-medium"><%= @lead.instagram_url %></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <% if @lead.notes.present? %>
-    <div>
-      <p class="text-gray-500 text-sm">Notas</p>
-      <p class="mt-1"><%= simple_format(@lead.notes) %></p>
-    </div>
-  <% end %>
-</div>
 
-<%= link_to "&larr; Voltar".html_safe, admin_leads_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>
+  <div class="space-y-8">
+    <div class="admin-card p-6">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Acoes Rapidas</h3>
+      <div class="grid grid-cols-1 gap-2">
+        <%= link_to "Editar Lead", edit_admin_lead_path(@lead), class: "w-full py-3 bg-blue-600 text-white text-center font-bold rounded-xl shadow-lg shadow-blue-500/20" %>
+        <%= link_to "Voltar", admin_leads_path, class: "w-full py-3 border border-slate-200 text-slate-600 text-center font-bold rounded-xl" %>
+      </div>
+    </div>
+
+    <div class="admin-card p-6">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Notas</h3>
+      <div class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl">
+        <%= @lead.notes.presence || "Nenhuma nota registrada." %>
+      </div>
+    </div>
+  </div>
+</div>

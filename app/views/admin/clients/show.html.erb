@@ -1,34 +1,49 @@
-<h1 class="text-2xl font-bold mb-6"><%= @client.business_name %></h1>
-
-<div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-  <div class="grid md:grid-cols-3 gap-4">
-    <div><p class="text-gray-500 text-sm">Nicho</p><p class="font-medium"><%= @client.niche %></p></div>
-    <div><p class="text-gray-500 text-sm">Cidade</p><p class="font-medium"><%= @client.city %></p></div>
-    <div><p class="text-gray-500 text-sm">Plano</p><p class="font-medium"><%= @client.plan || "—" %></p></div>
-    <div><p class="text-gray-500 text-sm">Contato</p><p class="font-medium"><%= @client.contact_name || "—" %></p></div>
-    <div><p class="text-gray-500 text-sm">WhatsApp</p><p class="font-medium"><%= @client.whatsapp || "—" %></p></div>
-    <div><p class="text-gray-500 text-sm">Email</p><p class="font-medium"><%= @client.email || "—" %></p></div>
-  </div>
+<div class="mb-8 flex items-center gap-4">
+  <%= link_to admin_clients_path, class: "p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors" do %>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+  <% end %>
+  <h1 class="text-2xl font-bold text-slate-900">Cliente: <%= @client.business_name %></h1>
 </div>
 
-<h2 class="text-lg font-semibold mb-4">Pedidos de Conteudo</h2>
-<% @content_requests.each do |cr| %>
-  <div class="bg-white rounded-lg shadow-sm p-4 mb-3">
-    <div class="flex justify-between">
-      <span class="font-medium"><%= cr.objective&.truncate(80) || "Sem objetivo" %></span>
-      <span class="px-2 py-1 rounded-full text-xs font-medium bg-gray-100"><%= cr.status %></span>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="lg:col-span-2 space-y-8">
+    <div class="admin-card p-8">
+      <div class="flex justify-between items-start mb-6">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest border-b pb-2 flex-1 mr-4">Perfil do Cliente</h3>
+        <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold uppercase"><%= @client.plan&.humanize %></span>
+      </div>
+      <div class="grid grid-cols-2 gap-y-6">
+        <div><label class="block text-xs text-slate-400">Cidade</label><p class="font-bold"><%= @client.city %></p></div>
+        <div><label class="block text-xs text-slate-400">Nicho</label><p class="font-bold"><%= @client.niche&.humanize %></p></div>
+        <div><label class="block text-xs text-slate-400">Contato</label><p class="font-bold"><%= @client.contact_name %></p></div>
+        <div><label class="block text-xs text-slate-400">WhatsApp</label><p class="font-bold"><%= @client.whatsapp %></p></div>
+      </div>
     </div>
-    <% if cr.content_outputs.any? %>
-      <div class="mt-2 space-y-1">
-        <% cr.content_outputs.each do |co| %>
-          <div class="text-sm text-gray-600">
-            <%= link_to co.title, admin_content_output_path(co), class: "text-blue-600 hover:underline" %>
-            <span class="text-gray-400">(<%= co.output_type %> / <%= co.status %>)</span>
+
+    <!-- Pedidos do Cliente -->
+    <div class="admin-card">
+      <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+        <h3 class="font-bold text-slate-900">Historico de Pedidos</h3>
+      </div>
+      <div class="divide-y divide-slate-100">
+        <% @client.content_requests.each do |req| %>
+          <div class="p-6 flex justify-between items-center">
+            <div>
+              <div class="font-bold text-sm"><%= req.objective.truncate(60) %></div>
+              <div class="text-xs text-slate-400"><%= req.created_at.strftime("%d/%m/%Y") %></div>
+            </div>
+            <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-slate-100 text-slate-600">
+              <%= req.status&.humanize %>
+            </span>
           </div>
         <% end %>
       </div>
-    <% end %>
+    </div>
   </div>
-<% end %>
 
-<%= link_to "&larr; Voltar".html_safe, admin_clients_path, class: "inline-block mt-4 text-gray-600 hover:text-gray-800" %>
+  <div class="admin-card p-6">
+    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Novo Pedido</h3>
+    <p class="text-xs text-slate-500 mb-6 leading-relaxed italic">Inicie um novo ciclo de conteudo para este cliente.</p>
+    <button class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-900/10">Criar Content Request</button>
+  </div>
+</div>

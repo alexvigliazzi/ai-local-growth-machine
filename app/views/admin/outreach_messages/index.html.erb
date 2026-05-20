@@ -1,23 +1,45 @@
-<h1 class="text-2xl font-bold mb-6">Outreach Messages</h1>
-<div class="bg-white rounded-lg shadow-sm overflow-hidden">
-  <table class="w-full text-sm">
-    <thead>
-      <tr class="text-left text-gray-500 border-b bg-gray-50">
-        <th class="p-3">Lead</th>
-        <th class="p-3">Canal</th>
-        <th class="p-3">Tipo</th>
-        <th class="p-3">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @outreach_messages.each do |om| %>
-        <tr class="border-b hover:bg-gray-50">
-          <td class="p-3"><%= om.lead.business_name %></td>
-          <td class="p-3"><%= om.channel %></td>
-          <td class="p-3"><%= om.message_type %></td>
-          <td class="p-3"><%= om.status %></td>
+<div class="flex justify-between items-center mb-8">
+  <h1 class="text-2xl font-bold text-slate-900">Mensagens de Outreach</h1>
+</div>
+
+<div class="admin-card overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
+          <th class="px-6 py-4">Lead</th>
+          <th class="px-6 py-4">Canal</th>
+          <th class="px-6 py-4">Status</th>
+          <th class="px-6 py-4 text-right">Data</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <% @outreach_messages.each do |msg| %>
+          <tr class="hover:bg-slate-50/50 transition-colors">
+            <td class="px-6 py-4">
+              <div class="font-bold text-slate-900 text-sm"><%= msg.lead.business_name %></div>
+            </td>
+            <td class="px-6 py-4">
+              <span class="text-xs px-2 py-1 rounded bg-slate-100 text-slate-600 font-bold uppercase tracking-widest">
+                <%= msg.channel&.humanize %>
+              </span>
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                <%= case msg.status
+                    when 'pending' then 'bg-slate-100 text-slate-600'
+                    when 'sent' then 'bg-blue-100 text-blue-700'
+                    when 'replied' then 'bg-green-100 text-green-700'
+                    end %>">
+                <%= msg.status&.humanize %>
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right text-xs text-slate-400">
+              <%= msg.created_at.strftime("%d/%m/%y") %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
