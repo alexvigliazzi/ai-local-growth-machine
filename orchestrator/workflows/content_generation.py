@@ -1,13 +1,14 @@
 from agents.researcher import ResearcherAgent
 from agents.content_planner import ContentPlannerAgent
 from agents.video_scripter import VideoScripterAgent
+from agents.social_poster import SocialPosterAgent
 
 
 class ContentGenerationWorkflow:
     def run(self, client: dict, request: dict) -> dict:
         results = {}
 
-        print(f"  [1/3] Researching: {client['business_name']}...")
+        print(f"  [1/4] Researching: {client['business_name']}...")
         researcher = ResearcherAgent()
         results["research"] = researcher.research(
             business_name=client["business_name"],
@@ -16,7 +17,7 @@ class ContentGenerationWorkflow:
             services=request.get("services") or "",
         )
 
-        print(f"  [2/3] Planning content...")
+        print(f"  [2/4] Planning content...")
         planner = ContentPlannerAgent()
         results["content_plan"] = planner.plan(
             client=client,
@@ -24,7 +25,15 @@ class ContentGenerationWorkflow:
             research_context=results["research"],
         )
 
-        print(f"  [3/3] Writing video scripts...")
+        print(f"  [3/4] Writing social posts...")
+        poster = SocialPosterAgent()
+        results["social_post"] = poster.post(
+            client=client,
+            request=request,
+            themes=request.get("objective") or "",
+        )
+
+        print(f"  [4/4] Writing video scripts...")
         scripter = VideoScripterAgent()
         results["video_script"] = scripter.script(
             client=client,

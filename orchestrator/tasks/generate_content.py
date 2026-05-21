@@ -26,7 +26,7 @@ def run():
         try:
             results = workflow.run(client=client, request=req)
 
-            for output_type in ("content_plan", "video_script"):
+            for output_type in ("content_plan", "social_post", "video_script"):
                 if output_type in results:
                     title = f"{output_type.replace('_', ' ').title()} — {client['business_name']}"
                     rails.create_content_output(req["id"], title, results[output_type], output_type)
