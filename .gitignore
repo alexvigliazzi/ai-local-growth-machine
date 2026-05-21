@@ -53,3 +53,10 @@ server.log
 
 # Node
 /node_modules/
+
+# Orchestrator
+/orchestrator/.env
+/orchestrator/__pycache__/
+/orchestrator/tasks/__pycache__/
+/orchestrator/_task_wrapper.ps1
+/orchestrator/scheduler.log

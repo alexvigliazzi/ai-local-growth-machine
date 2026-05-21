@@ -11,18 +11,26 @@ Rails.application.routes.draw do
   # Admin
   namespace :admin do
     root "dashboard#index"
-    resources :leads
+    resources :leads do
+      member { post :queue_outreach }
+    end
     resources :clients
-    resources :content_requests
+    resources :content_requests do
+      member { post :queue_generation }
+    end
     resources :content_outputs
     resources :outreach_messages
     resources :reports
   end
 
-  # API (LangGraph callback)
+  # API (orchestrator local)
   namespace :api do
-    post "content_outputs", to: "content_outputs#create"
-    post "outreach_messages", to: "outreach_messages#create"
+    resources :clients, only: %i[index show]
+    resources :leads, only: %i[index show]
+    resources :content_requests, only: %i[index show update]
+    resources :content_outputs, only: %i[create]
+    resources :outreach_messages, only: %i[index create update]
+    resources :reports, only: %i[create]
   end
 
   # Health

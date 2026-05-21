@@ -8,5 +8,12 @@ module Admin
     def show
       @content_request = ContentRequest.find(params[:id])
     end
+
+    def queue_generation
+      @content_request = ContentRequest.find(params[:id])
+      @content_request.update!(status: "pending")
+      redirect_to admin_content_request_path(@content_request),
+        notice: "Enfileirado. Rode: python run.py content"
+    end
   end
 end
