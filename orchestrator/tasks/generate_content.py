@@ -1,20 +1,16 @@
-"""Fetch pending content requests, generate outputs via Ollama, post back to Rails."""
+"""Fetch pending content requests, run the content generation workflow, post results to Rails."""
 
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from rails_client import RailsClient
-from ai_client import AiClient
-from prompt_renderer import PromptRenderer
-
-OUTPUT_TYPES = ["content_plan", "social_post", "video_script"]
+from workflows.content_generation import ContentGenerationWorkflow
 
 
 def run():
     rails = RailsClient()
-    ai = AiClient()
-    renderer = PromptRenderer()
+    workflow = ContentGenerationWorkflow()
 
     pending = rails.get_pending_content_requests()
     if not pending:
@@ -27,35 +23,19 @@ def run():
 
         rails.mark_content_request_in_progress(req["id"])
 
-        for output_type in OUTPUT_TYPES:
-            template_name = output_type
-            variables = {
-                "business_name": client["business_name"],
-                "niche": client["niche"],
-                "city": client["city"],
-                "services": req["services"] or "",
-                "tone": req["tone"] or "profissional",
-                "objective": req["objective"] or "",
-                "references": req["references"] or "",
-                "target_audience": f"Publico local de {client['city']} interessado em {client['niche']}",
-                "duration": "7",
-                "channel": "instagram",
-            }
+        try:
+            results = workflow.run(client=client, request=req)
 
-            try:
-                system_prompt, user_prompt = renderer.render(template_name, variables)
-                content = ai.generate(system_prompt, user_prompt)
+            for output_type in ("content_plan", "video_script"):
+                if output_type in results:
+                    title = f"{output_type.replace('_', ' ').title()} — {client['business_name']}"
+                    rails.create_content_output(req["id"], title, results[output_type], output_type)
+                    print(f"  Created: {title}")
 
-                title = f"{output_type.replace('_', ' ').title()} — {client['business_name']}"
-                rails.create_content_output(req["id"], title, content, output_type)
-                print(f"  Created: {title}")
-            except FileNotFoundError:
-                print(f"  Skipped: no template for {output_type}")
-            except Exception as e:
-                print(f"  Error generating {output_type}: {e}")
-
-        rails.mark_content_request_completed(req["id"])
-        print(f"  Completed: {req['id']}")
+            rails.mark_content_request_completed(req["id"])
+            print(f"  Completed: {req['id']}")
+        except Exception as e:
+            print(f"  Error: {e}")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""Generate weekly reports for active clients via Ollama, post back to Rails."""
+"""Generate weekly reports using the weekly report workflow."""
 
 import sys
 import os
@@ -6,14 +6,12 @@ from datetime import datetime, timedelta
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from rails_client import RailsClient
-from ai_client import AiClient
-from prompt_renderer import PromptRenderer
+from workflows.weekly_report import WeeklyReportWorkflow
 
 
 def run():
     rails = RailsClient()
-    ai = AiClient()
-    renderer = PromptRenderer()
+    workflow = WeeklyReportWorkflow()
 
     clients = rails.get_clients(status="active")
     if not clients:
@@ -38,22 +36,16 @@ def run():
             for o in weekly_outputs
         )
 
-        variables = {
-            "business_name": client["business_name"],
-            "niche": client["niche"],
-            "plan": client.get("plan") or "starter",
-            "period_start": week_ago.strftime("%d/%m/%Y"),
-            "period_end": today.strftime("%d/%m/%Y"),
-            "content_outputs_summary": outputs_summary,
-            "metrics": "Sem metricas disponiveis neste periodo.",
-        }
-
         try:
-            system_prompt, user_prompt = renderer.render("weekly_report", variables)
-            content = ai.generate(system_prompt, user_prompt)
+            results = workflow.run(
+                client=client,
+                period_start=week_ago.strftime("%d/%m/%Y"),
+                period_end=today.strftime("%d/%m/%Y"),
+                outputs_summary=outputs_summary,
+            )
 
             title = f"Relatorio Semanal — {client['business_name']} — {today.strftime('%d/%m/%Y')}"
-            result = rails.create_report(client["id"], title, content)
+            result = rails.create_report(client["id"], title, results["report"])
             print(f"  Created report (token: {result['token']})")
         except Exception as e:
             print(f"  Error: {e}")
