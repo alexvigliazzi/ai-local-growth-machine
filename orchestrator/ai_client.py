@@ -90,11 +90,12 @@ class LLMRouter:
         raise RuntimeError(f"All backends failed for profile '{self.profile}': {last_error}")
 
 
-# Backward-compatible alias
+# Backward-compatible alias — model/host params kept for signature compat but ignored.
+# New code should use LLMRouter(profile=...) directly.
 class AiClient:
     def __init__(self, model=None, host=None):
-        self._model = model
-        self._host = host
+        if model or host:
+            print(f"[AiClient] Warning: model/host params are deprecated and ignored. Use LLMRouter.")
 
     def generate(self, system_prompt: str, user_prompt: str) -> str:
         router = LLMRouter(profile="fast")

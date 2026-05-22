@@ -46,7 +46,7 @@ def run():
 
             title = f"Relatorio Semanal — {client['business_name']} — {today.strftime('%d/%m/%Y')}"
             result = rails.create_report(client["id"], title, results["report"])
-            print(f"  Created report (token: {result['token']})")
+            print(f"  Created report (id: {result.get('id', 'N/A')}, token: {result.get('token', 'N/A')})")
         except Exception as e:
             print(f"  Error: {e}")
 

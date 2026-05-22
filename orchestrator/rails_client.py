@@ -6,10 +6,11 @@ class RailsClient:
     def __init__(self):
         self.base_url = RAILS_API_URL
         self.headers = {
-            "Authorization": f"Bearer {API_TOKEN}",
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
+        if API_TOKEN:
+            self.headers["Authorization"] = f"Bearer {API_TOKEN}"
 
     def _get(self, path, params=None):
         resp = requests.get(f"{self.base_url}{path}", headers=self.headers, params=params)
@@ -35,6 +36,9 @@ class RailsClient:
 
     def mark_content_request_completed(self, request_id):
         return self._patch(f"/content_requests/{request_id}", {"status": "completed"})
+
+    def mark_content_request_failed(self, request_id):
+        return self._patch(f"/content_requests/{request_id}", {"status": "failed"})
 
     # Content Outputs
     def create_content_output(self, content_request_id, title, content, output_type):

@@ -18,8 +18,9 @@ class PromptRenderer:
 
         for key, value in variables.items():
             placeholder = "{" + key + "}"
-            system_prompt = system_prompt.replace(placeholder, str(value))
-            user_prompt = user_prompt.replace(placeholder, str(value))
+            safe_value = str(value) if value is not None else ""
+            system_prompt = system_prompt.replace(placeholder, safe_value)
+            user_prompt = user_prompt.replace(placeholder, safe_value)
 
         return system_prompt.strip(), user_prompt.strip()
 

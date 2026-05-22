@@ -36,6 +36,10 @@ def run():
             print(f"  Completed: {req['id']}")
         except Exception as e:
             print(f"  Error: {e}")
+            try:
+                rails.mark_content_request_failed(req["id"])
+            except Exception as fail_err:
+                print(f"  Could not mark as failed: {fail_err}")
 
 
 if __name__ == "__main__":

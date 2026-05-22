@@ -121,8 +121,8 @@ class TestGenerateContent:
 
     @patch("tasks.generate_content.ContentGenerationWorkflow")
     @patch("tasks.generate_content.RailsClient")
-    def test_workflow_error_does_not_mark_completed(self, mock_rails_cls, mock_workflow_cls):
-        """BUG DOCUMENTATION: request stays in 'in_progress' forever when workflow fails."""
+    def test_workflow_error_marks_failed(self, mock_rails_cls, mock_workflow_cls):
+        """When workflow fails, request is marked as 'failed' instead of staying stuck in 'in_progress'."""
         mock_rails = MagicMock()
         mock_rails_cls.return_value = mock_rails
         mock_rails.get_pending_content_requests.return_value = [PENDING_REQ]
@@ -135,7 +135,8 @@ class TestGenerateContent:
         run()  # should not raise (task catches errors)
 
         mock_rails.mark_content_request_in_progress.assert_called_once()
-        mock_rails.mark_content_request_completed.assert_not_called()  # BUG: stuck in in_progress
+        mock_rails.mark_content_request_completed.assert_not_called()
+        mock_rails.mark_content_request_failed.assert_called_once_with("req-1")
 
     @patch("tasks.generate_content.ContentGenerationWorkflow")
     @patch("tasks.generate_content.RailsClient")
@@ -352,13 +353,8 @@ class TestGenerateReports:
 
     @patch("tasks.generate_reports.WeeklyReportWorkflow")
     @patch("tasks.generate_reports.RailsClient")
-    def test_accesses_result_token(self, mock_rails_cls, mock_workflow_cls):
-        """BUG DOCUMENTATION: generate_reports accesses result['token'].
-
-        If Rails omits 'token' from the response, generate_reports catches the
-        KeyError in its generic except block — the error is logged but the client
-        is silently skipped. This documents the fragile dependency.
-        """
+    def test_handles_missing_token_in_response(self, mock_rails_cls, mock_workflow_cls):
+        """When Rails omits 'token' from response, .get() returns 'N/A' instead of crashing."""
         mock_rails = MagicMock()
         mock_rails_cls.return_value = mock_rails
         mock_rails.get_clients.return_value = [ACTIVE_CLIENT]
@@ -374,9 +370,7 @@ class TestGenerateReports:
 
         from tasks.generate_reports import run
 
-        # Doesn't raise — the KeyError is caught by the generic except.
-        # But the report is silently treated as failed.
+        # No longer crashes — uses .get() with default
         run()  # should not raise
 
-        # Report was created (Rails call succeeded) but error was logged
         mock_rails.create_report.assert_called_once()

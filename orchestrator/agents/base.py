@@ -18,7 +18,7 @@ class Agent:
 
         if template and variables:
             system, user = _renderer.render(template, variables)
-            if self.system_prompt and not template:
+            if not system and self.system_prompt:
                 system = self.system_prompt
         elif user_prompt:
             system = self.system_prompt

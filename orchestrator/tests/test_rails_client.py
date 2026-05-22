@@ -354,10 +354,22 @@ def test_create_report_payload_shape(mock_requests):
 @patch("rails_client.requests")
 @patch("rails_client.API_TOKEN", "")
 @patch("rails_client.RAILS_API_URL", "http://test:3000/api")
-def test_empty_api_token_still_sends_header(mock_requests):
-    """BUG DOCUMENTATION: empty API_TOKEN sends 'Bearer ' header to Rails."""
+def test_empty_api_token_omits_auth_header(mock_requests):
+    """Empty API_TOKEN should not send Authorization header at all."""
     mock_requests.get.return_value = _make_response([])
     from rails_client import RailsClient
 
     client = RailsClient()
-    assert client.headers["Authorization"] == "Bearer "
+    assert "Authorization" not in client.headers
+
+
+@patch("rails_client.requests")
+@patch("rails_client.RAILS_API_URL", "http://test:3000/api")
+def test_mark_content_request_failed(mock_requests):
+    mock_requests.patch.return_value = _make_response({"id": "r1", "status": "failed"})
+    from rails_client import RailsClient
+
+    RailsClient().mark_content_request_failed("r1")
+
+    json_arg = mock_requests.patch.call_args.kwargs.get("json") or mock_requests.patch.call_args[1].get("json")
+    assert json_arg == {"status": "failed"}

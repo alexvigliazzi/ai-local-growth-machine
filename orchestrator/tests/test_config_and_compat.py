@@ -68,13 +68,13 @@ class TestClaudeBackendLazyValidation:
 
 
 class TestRailsClientEmptyToken:
-    def test_empty_api_token_sends_empty_bearer(self):
-        """BUG DOCUMENTATION: empty API_TOKEN sends 'Bearer ' header."""
+    def test_empty_api_token_omits_auth_header(self):
+        """Empty API_TOKEN should not include Authorization header."""
         with patch("rails_client.API_TOKEN", ""):
             from rails_client import RailsClient
 
             client = RailsClient()
-            assert client.headers["Authorization"] == "Bearer "
+            assert "Authorization" not in client.headers
 
 
 class TestAiClientBackwardCompat:
@@ -92,8 +92,8 @@ class TestAiClientBackwardCompat:
         mock_router_cls.assert_called_once_with(profile="fast")
 
     @patch("ai_client.LLMRouter")
-    def test_ai_client_ignores_model_and_host(self, mock_router_cls):
-        """BUG DOCUMENTATION: model and host params are dead code — stored but never used."""
+    def test_ai_client_deprecated_params_print_warning(self, mock_router_cls):
+        """model and host params are deprecated — they print a warning and are ignored."""
         mock_router = MagicMock()
         mock_router_cls.return_value = mock_router
         mock_router.generate.return_value = "result"
@@ -101,8 +101,8 @@ class TestAiClientBackwardCompat:
         from ai_client import AiClient
 
         client = AiClient(model="gpt-4", host="http://other:8080")
-        assert client._model == "gpt-4"
-        assert client._host == "http://other:8080"
+        assert not hasattr(client, "_model")  # no longer stored
+        assert not hasattr(client, "_host")
 
         client.generate("sys", "usr")
 

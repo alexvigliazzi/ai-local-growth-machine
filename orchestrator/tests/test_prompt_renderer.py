@@ -44,15 +44,16 @@ class TestRenderVariables:
 
         assert "Ana" in system  # no error from extra keys
 
-    def test_render_none_value_becomes_string_none(self, tmp_path):
-        """BUG DOCUMENTATION: None values become literal 'None' in prompts."""
+    def test_render_none_value_becomes_empty_string(self, tmp_path):
+        """None values are replaced with empty string, not literal 'None'."""
         _write_template(tmp_path, "test", "## System\nRef: {references}\n\n## User\nGo")
         from prompt_renderer import PromptRenderer
 
         renderer = PromptRenderer(prompts_dir=str(tmp_path))
         system, user = renderer.render("test", {"references": None})
 
-        assert "None" in system  # str(None) = "None" — pollutes LLM input
+        assert "None" not in system  # no longer pollutes LLM input
+        assert "Ref:" in system  # placeholder replaced with empty string
 
     def test_render_int_value_converted_to_string(self, tmp_path):
         _write_template(tmp_path, "test", "## System\nCount: {count}\n\n## User\nGo")

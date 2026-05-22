@@ -67,13 +67,8 @@ class TestAgentRun:
 
     @patch("agents.base._renderer")
     @patch("agents.base.LLMRouter")
-    def test_run_with_template_uses_template_system_not_agent(self, mock_router_cls, mock_renderer):
-        """BUG DOCUMENTATION: line 21 is dead code.
-
-        When template is provided, `if self.system_prompt and not template` is
-        always False because `template` is truthy. The agent's system_prompt is
-        NEVER used in template mode — the template's ## System section wins.
-        """
+    def test_run_with_template_uses_template_system_when_present(self, mock_router_cls, mock_renderer):
+        """When template has a ## System section, it takes precedence over agent's system_prompt."""
         mock_renderer.render.return_value = ("template system", "template user")
         mock_router = MagicMock()
         mock_router_cls.return_value = mock_router
@@ -85,8 +80,24 @@ class TestAgentRun:
         agent.run(template="content_plan", variables={"key": "val"})
 
         call_args = mock_router.generate.call_args[0]
-        assert call_args[0] == "template system"  # template's system used
-        assert call_args[0] != "AGENT SYSTEM PROMPT"  # agent's system ignored (dead code)
+        assert call_args[0] == "template system"  # template's system wins
+
+    @patch("agents.base._renderer")
+    @patch("agents.base.LLMRouter")
+    def test_run_with_template_falls_back_to_agent_system_when_template_has_none(self, mock_router_cls, mock_renderer):
+        """When template has no ## System section, agent's system_prompt is used as fallback."""
+        mock_renderer.render.return_value = ("", "template user")  # empty system from template
+        mock_router = MagicMock()
+        mock_router_cls.return_value = mock_router
+        mock_router.generate.return_value = "result"
+
+        from agents.base import Agent
+
+        agent = Agent("test", "strong", system_prompt="AGENT SYSTEM PROMPT")
+        agent.run(template="content_plan", variables={"key": "val"})
+
+        call_args = mock_router.generate.call_args[0]
+        assert call_args[0] == "AGENT SYSTEM PROMPT"  # agent's system_prompt used as fallback
 
     @patch("agents.base.LLMRouter")
     def test_run_propagates_llm_router_exception(self, mock_router_cls):
