@@ -7,10 +7,11 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 
 class TestContentGenerationWorkflow:
+    @patch("workflows.content_generation.SocialPosterAgent")
     @patch("workflows.content_generation.VideoScripterAgent")
     @patch("workflows.content_generation.ContentPlannerAgent")
     @patch("workflows.content_generation.ResearcherAgent")
-    def test_pipeline_runs_all_agents(self, mock_researcher_cls, mock_planner_cls, mock_scripter_cls):
+    def test_pipeline_runs_all_agents(self, mock_researcher_cls, mock_planner_cls, mock_scripter_cls, mock_poster_cls):
         mock_researcher = MagicMock()
         mock_researcher_cls.return_value = mock_researcher
         mock_researcher.research.return_value = "research output"
@@ -18,6 +19,10 @@ class TestContentGenerationWorkflow:
         mock_planner = MagicMock()
         mock_planner_cls.return_value = mock_planner
         mock_planner.plan.return_value = "content plan output"
+
+        mock_poster = MagicMock()
+        mock_poster_cls.return_value = mock_poster
+        mock_poster.post.return_value = "social post output"
 
         mock_scripter = MagicMock()
         mock_scripter_cls.return_value = mock_scripter
@@ -33,10 +38,12 @@ class TestContentGenerationWorkflow:
 
         mock_researcher.research.assert_called_once()
         mock_planner.plan.assert_called_once()
+        mock_poster.post.assert_called_once()
         mock_scripter.script.assert_called_once()
 
         assert results["research"] == "research output"
         assert results["content_plan"] == "content plan output"
+        assert results["social_post"] == "social post output"
         assert results["video_script"] == "video script output"
 
 
