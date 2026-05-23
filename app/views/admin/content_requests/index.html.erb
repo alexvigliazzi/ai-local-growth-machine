@@ -1,45 +1,47 @@
 <div class="flex justify-between items-center mb-8">
-  <h1 class="text-2xl font-bold text-slate-900">Pedidos de Conteudo</h1>
-  <div class="flex gap-2">
-    <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-bold uppercase tracking-widest"><%= @pending_requests %> Pendentes</span>
+  <h1 class="text-3xl font-extrabold text-white tracking-tighter leading-tight">Pedidos de Conteúdo</h1>
+  <div class="flex gap-3">
+    <span class="px-4 py-2 bg-orange-500/10 text-orange-400 rounded-full text-[10px] font-bold uppercase tracking-widest border border-orange-500/20 shadow-lg shadow-orange-500/10">
+      <%= @pending_requests %> Pendentes
+    </span>
   </div>
 </div>
 
-<div class="admin-card overflow-hidden">
+<div class="admin-card overflow-hidden shadow-2xl">
   <div class="overflow-x-auto">
     <table class="w-full text-left">
       <thead>
-        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
-          <th class="px-6 py-4">Cliente</th>
-          <th class="px-6 py-4">Objetivo</th>
-          <th class="px-6 py-4">Tom</th>
-          <th class="px-6 py-4">Status</th>
-          <th class="px-6 py-4 text-right">Acoes</th>
+        <tr class="bg-white/[0.02] text-slate-500 text-[10px] uppercase tracking-[0.2em] font-bold">
+          <th class="px-8 py-5">Cliente</th>
+          <th class="px-8 py-5">Objetivo</th>
+          <th class="px-8 py-5">Tom</th>
+          <th class="px-8 py-5">Status</th>
+          <th class="px-8 py-5 text-right">Ações</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-slate-100">
+      <tbody class="divide-y divide-white/5">
         <% @content_requests.each do |request| %>
-          <tr class="hover:bg-slate-50/50 transition-colors">
-            <td class="px-6 py-4">
-              <div class="font-bold text-slate-900 text-sm"><%= request.client.business_name %></div>
-              <div class="text-xs text-slate-500"><%= request.created_at.strftime("%d/%m/%y") %></div>
+          <tr class="hover:bg-white/[0.03] transition-colors group">
+            <td class="px-8 py-6">
+              <div class="font-bold text-white text-base group-hover:text-blue-400 transition-colors"><%= request.client.business_name %></div>
+              <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1"><%= request.created_at.strftime("%d/%m/%y") %></div>
             </td>
-            <td class="px-6 py-4">
-              <div class="text-sm text-slate-600 truncate max-w-xs"><%= request.objective %></div>
+            <td class="px-8 py-6">
+              <div class="text-sm text-slate-400 truncate max-w-xs font-medium"><%= request.objective %></div>
             </td>
-            <td class="px-6 py-4 text-xs text-slate-500"><%= request.tone&.humanize %></td>
-            <td class="px-6 py-4">
-              <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
-                <%= case request.status
-                    when 'pending' then 'bg-orange-100 text-orange-700'
-                    when 'in_progress' then 'bg-blue-100 text-blue-700'
-                    when 'completed' then 'bg-green-100 text-green-700'
-                    end %>">
-                <%= request.status&.humanize %>
-              </span>
+            <td class="px-8 py-6 text-xs text-slate-500 font-bold uppercase tracking-widest"><%= request.tone&.humanize %></td>
+            <td class="px-8 py-6">
+              <% case request.status %>
+              <% when 'pending' %>
+                <span class="px-3 py-1.5 rounded-lg bg-orange-500/10 text-orange-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-orange-500/20">Pendente</span>
+              <% when 'in_progress' %>
+                <span class="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-blue-500/20">Em Progresso</span>
+              <% when 'completed' %>
+                <span class="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-green-500/20">Concluído</span>
+              <% end %>
             </td>
-            <td class="px-6 py-4 text-right">
-              <%= link_to "Produzir", admin_content_request_path(request), class: "px-3 py-1 bg-slate-100 text-slate-900 font-bold text-xs rounded-lg hover:bg-slate-200 transition-colors" %>
+            <td class="px-8 py-6 text-right">
+              <%= link_to "Produzir", admin_content_request_path(request), class: "px-5 py-2 bg-white/5 text-white font-bold text-xs rounded-xl hover:bg-white/10 transition-all border border-white/10" %>
             </td>
           </tr>
         <% end %>

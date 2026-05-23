@@ -1,125 +1,135 @@
-<div class="max-w-3xl mx-auto py-12 px-6">
-  <div class="text-center mb-12">
-    <h1 class="text-3xl font-bold mb-2">Prepare o seu Piloto</h1>
-    <p class="text-slate-500">Conte-nos sobre seu negocio para gerarmos o melhor conteudo.</p>
+<div class="max-w-4xl mx-auto py-20 px-6">
+  <div class="text-center mb-16 reveal">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight leading-tight">Prepare o seu Piloto</h1>
+    <p class="text-slate-500 text-lg font-medium">Conte-nos sobre seu negocio para gerarmos o melhor conteudo.</p>
   </div>
 
-  <div class="glass p-8 md:p-12 rounded-[2.5rem] shadow-xl">
+  <div class="glass p-10 md:p-16 rounded-[48px] shadow-[0_40px_100px_-20px_oklch(0%_0_0_/_0.1)] border-white/60 reveal">
     <!-- Progress Indicator -->
-    <div class="flex gap-2 mb-10">
-      <div class="step-indicator h-1.5 flex-1 rounded-full bg-blue-600 transition-all duration-500"></div>
-      <div class="step-indicator h-1.5 flex-1 rounded-full bg-slate-200 transition-all duration-500"></div>
-      <div class="step-indicator h-1.5 flex-1 rounded-full bg-slate-200 transition-all duration-500"></div>
+    <div class="flex gap-3 mb-12">
+      <div class="step-indicator h-2 flex-1 rounded-full bg-blue-600 shadow-[0_0_15px_oklch(60%_0.16_250_/_30%)] transition-all duration-700"></div>
+      <div class="step-indicator h-2 flex-1 rounded-full bg-slate-100 transition-all duration-700"></div>
+      <div class="step-indicator h-2 flex-1 rounded-full bg-slate-100 transition-all duration-700"></div>
     </div>
 
     <%= form_with url: "/briefing", method: :post, id: "briefing-form" do |f| %>
 
       <!-- Step 1: Seu Negocio -->
-      <div class="step-content" data-step="1">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
-          <span class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-sm">1</span>
+      <div class="step-content transition-all duration-500 transform" data-step="1">
+        <h2 class="text-2xl font-bold mb-8 flex items-center gap-4">
+          <span class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-base shadow-lg">1</span>
           Sobre seu negocio
         </h2>
 
-        <div class="space-y-6">
-          <div>
-            <%= f.label :business_name, "Nome do negocio", class: "block text-sm font-semibold mb-2" %>
-            <%= f.text_field :business_name, placeholder: "Ex: Moto Wind", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all", required: true %>
+        <div class="space-y-8">
+          <div class="group">
+            <%= f.label :business_name, "Nome do negocio", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.text_field :business_name, placeholder: "Ex: Moto Wind", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50", required: true %>
           </div>
 
-          <div>
-            <%= f.label :city, "Cidade", class: "block text-sm font-semibold mb-2" %>
-            <%= f.text_field :city, placeholder: "Ex: Botucatu - SP", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all", required: true %>
+          <div class="group">
+            <%= f.label :city, "Cidade", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.text_field :city, placeholder: "Ex: Botucatu - SP", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50", required: true %>
           </div>
 
-          <div>
-            <%= f.label :niche, "Seu nicho", class: "block text-sm font-semibold mb-2" %>
-            <%= f.select :niche,
-                options_for_select([['Oficina / Lojas de Moto', 'oficina_moto'], ['Estetica e Beleza', 'estetica'], ['Odontologia', 'odonto'], ['Outro', 'outro']]),
-                {},
-                class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none" %>
+          <div class="group">
+            <%= f.label :niche, "Seu nicho", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+            <div class="relative">
+              <%= f.select :niche,
+                  options_for_select([['Oficina / Lojas de Moto', 'oficina_moto'], ['Estetica e Beleza', 'estetica'], ['Odontologia', 'odonto'], ['Outro', 'outro']]),
+                  {},
+                  class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50 appearance-none" %>
+              <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none opacity-30">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="mt-10 flex justify-end">
-          <button type="button" onclick="nextStep(1)" class="px-8 py-4 rounded-full btn-primary font-bold">Continuar</button>
+        <div class="mt-12 flex justify-end">
+          <button type="button" onclick="nextStep(1)" class="px-10 py-5 rounded-full btn-primary font-bold text-lg shadow-xl shadow-blue-500/10">Continuar</button>
         </div>
       </div>
 
       <!-- Step 2: Contato -->
-      <div class="step-content hidden" data-step="2">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
-          <span class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-sm">2</span>
+      <div class="step-content hidden transition-all duration-500 transform translate-x-4 opacity-0" data-step="2">
+        <h2 class="text-2xl font-bold mb-8 flex items-center gap-4">
+          <span class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-base shadow-lg">2</span>
           Dados de contato
         </h2>
 
-        <div class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <%= f.label :contact_name, "Seu nome", class: "block text-sm font-semibold mb-2" %>
-              <%= f.text_field :contact_name, placeholder: "Ex: Pedro Silva", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+        <div class="space-y-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="group">
+              <%= f.label :contact_name, "Seu nome", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+              <%= f.text_field :contact_name, placeholder: "Ex: Pedro Silva", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50" %>
             </div>
-            <div>
-              <%= f.label :whatsapp, "WhatsApp", class: "block text-sm font-semibold mb-2" %>
-              <%= f.text_field :whatsapp, placeholder: "(11) 99999-9999", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all", required: true %>
+            <div class="group">
+              <%= f.label :whatsapp, "WhatsApp", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+              <%= f.text_field :whatsapp, placeholder: "(11) 99999-9999", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50", required: true %>
             </div>
           </div>
 
-          <div>
-            <%= f.label :email, "E-mail", class: "block text-sm font-semibold mb-2" %>
-            <%= f.email_field :email, placeholder: "seu@email.com", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+          <div class="group">
+            <%= f.label :email, "E-mail", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.email_field :email, placeholder: "seu@email.com", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50" %>
           </div>
 
-          <div>
-            <%= f.label :instagram_url, "Instagram do negocio", class: "block text-sm font-semibold mb-2" %>
-            <%= f.text_field :instagram_url, placeholder: "@seunegocio", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+          <div class="group">
+            <%= f.label :instagram_url, "Instagram do negocio", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.text_field :instagram_url, placeholder: "@seunegocio", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50" %>
           </div>
         </div>
 
-        <div class="mt-10 flex justify-between">
-          <button type="button" onclick="prevStep(2)" class="px-8 py-4 rounded-full border border-slate-200 font-bold hover:bg-slate-50 transition-colors">Voltar</button>
-          <button type="button" onclick="nextStep(2)" class="px-8 py-4 rounded-full btn-primary font-bold">Continuar</button>
+        <div class="mt-12 flex justify-between">
+          <button type="button" onclick="prevStep(2)" class="px-10 py-5 rounded-full border border-slate-200 font-bold hover:bg-slate-50 transition-colors">Voltar</button>
+          <button type="button" onclick="nextStep(2)" class="px-10 py-5 rounded-full btn-primary font-bold text-lg shadow-xl shadow-blue-500/10">Continuar</button>
         </div>
       </div>
 
       <!-- Step 3: Conteudo -->
-      <div class="step-content hidden" data-step="3">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
-          <span class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-sm">3</span>
+      <div class="step-content hidden transition-all duration-500 transform translate-x-4 opacity-0" data-step="3">
+        <h2 class="text-2xl font-bold mb-8 flex items-center gap-4">
+          <span class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-base shadow-lg">3</span>
           Sobre o conteudo
         </h2>
 
-        <div class="space-y-6">
-          <div>
-            <%= f.label :objective, "Qual seu principal objetivo?", class: "block text-sm font-semibold mb-2" %>
-            <%= f.text_area :objective, placeholder: "Ex: Atrair novos clientes para revisao de freios", rows: 3, class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+        <div class="space-y-8">
+          <div class="group">
+            <%= f.label :objective, "Qual seu principal objetivo?", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.text_area :objective, placeholder: "Ex: Atrair novos clientes para revisao de freios", rows: 4, class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50 resize-none" %>
           </div>
 
-          <div>
-            <%= f.label :services, "Quais servicos quer destacar?", class: "block text-sm font-semibold mb-2" %>
-            <%= f.text_area :services, placeholder: "Ex: Troca de oleo, Pneus, Escapamento", rows: 3, class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+          <div class="group">
+            <%= f.label :services, "Quais servicos quer destacar?", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.text_area :services, placeholder: "Ex: Troca de oleo, Pneus, Escapamento", rows: 4, class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50 resize-none" %>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <%= f.label :tone, "Tom de voz", class: "block text-sm font-semibold mb-2" %>
-              <%= f.select :tone,
-                  options_for_select([['Profissional', 'profissional'], ['Descontraido', 'descontraido'], ['Tecnico', 'tecnico'], ['Amigavel', 'amigavel']]),
-                  {},
-                  class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none" %>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="group">
+              <%= f.label :tone, "Tom de voz", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+              <div class="relative">
+                <%= f.select :tone,
+                    options_for_select([['Profissional', 'profissional'], ['Descontraido', 'descontraido'], ['Tecnico', 'tecnico'], ['Amigavel', 'amigavel']]),
+                    {},
+                    class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50 appearance-none" %>
+                <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none opacity-30">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+              </div>
             </div>
-            <div>
-              <%= f.label :references, "Perfis que admira", class: "block text-sm font-semibold mb-2" %>
-              <%= f.text_field :references, placeholder: "@perfil.exemplo", class: "w-full p-4 rounded-2xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
+            <div class="group">
+              <%= f.label :references, "Perfis que admira", class: "block text-sm font-bold mb-3 text-slate-500 group-focus-within:text-blue-600 transition-colors" %>
+              <%= f.text_field :references, placeholder: "@perfil.exemplo", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50" %>
             </div>
           </div>
         </div>
 
-        <div class="mt-10 flex justify-between items-center">
-          <button type="button" onclick="prevStep(3)" class="px-8 py-4 rounded-full border border-slate-200 font-bold hover:bg-slate-50 transition-colors">Voltar</button>
+        <div class="mt-12 flex justify-between items-center">
+          <button type="button" onclick="prevStep(3)" class="px-10 py-5 rounded-full border border-slate-200 font-bold hover:bg-slate-50 transition-colors">Voltar</button>
           <div class="text-right">
-            <p class="text-xs text-slate-400 mb-2">Quase la! Ao enviar, analisaremos seus dados.</p>
-            <%= f.submit "Enviar briefing", class: "px-10 py-4 rounded-full btn-primary font-bold cursor-pointer" %>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-3">Analise via IA em breve</p>
+            <%= f.submit "Enviar briefing", class: "px-12 py-5 rounded-full btn-primary font-bold text-lg cursor-pointer shadow-xl shadow-blue-500/20" %>
           </div>
         </div>
       </div>
@@ -139,31 +149,63 @@
     inputs.forEach(input => {
       if (!input.value) {
         input.classList.add('border-red-500');
+        input.classList.add('ring-4');
+        input.classList.add('ring-red-500/10');
         valid = false;
       } else {
         input.classList.remove('border-red-500');
+        input.classList.remove('ring-4');
+        input.classList.remove('ring-red-500/10');
       }
     });
 
     if (!valid) return;
 
-    contents[current - 1].classList.add('hidden');
-    contents[current].classList.remove('hidden');
-    indicators[current].classList.remove('bg-slate-200');
-    indicators[current].classList.add('bg-blue-600');
+    // Transition out
+    contents[current - 1].classList.add('opacity-0');
+    contents[current - 1].classList.add('-translate-x-4');
+    
+    setTimeout(() => {
+      contents[current - 1].classList.add('hidden');
+      contents[current].classList.remove('hidden');
+      
+      // Force reflow
+      void contents[current].offsetWidth;
+      
+      contents[current].classList.remove('opacity-0');
+      contents[current].classList.remove('translate-x-4');
+      
+      indicators[current].classList.remove('bg-slate-100');
+      indicators[current].classList.add('bg-blue-600');
+      indicators[current].classList.add('shadow-[0_0_15px_oklch(60%_0.16_250_/_30%)]');
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
   }
 
   function prevStep(current) {
     const indicators = document.querySelectorAll('.step-indicator');
     const contents = document.querySelectorAll('.step-content');
 
-    contents[current - 1].classList.add('hidden');
-    contents[current - 2].classList.remove('hidden');
-    indicators[current - 1].classList.remove('bg-blue-600');
-    indicators[current - 1].classList.add('bg-slate-200');
+    // Transition out
+    contents[current - 1].classList.add('opacity-0');
+    contents[current - 1].classList.add('translate-x-4');
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      contents[current - 1].classList.add('hidden');
+      contents[current - 2].classList.remove('hidden');
+
+      // Force reflow
+      void contents[current - 2].offsetWidth;
+
+      contents[current - 2].classList.remove('opacity-0');
+      contents[current - 2].classList.remove('-translate-x-4');
+
+      indicators[current - 1].classList.remove('bg-blue-600');
+      indicators[current - 1].classList.remove('shadow-[0_0_15px_oklch(60%_0.16_250_/_30%)]');
+      indicators[current - 1].classList.add('bg-slate-100');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
   }
 </script>

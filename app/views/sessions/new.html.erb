@@ -1,35 +1,39 @@
-<div class="min-h-[80vh] flex items-center justify-center px-6">
-  <div class="w-full max-w-md">
-    <div class="text-center mb-10">
-      <div class="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-xl">G</div>
-      <h1 class="text-2xl font-bold">Acesso Administrativo</h1>
-      <p class="text-slate-500 text-sm mt-2">Area restrita para equipe Growth Machine</p>
+<div class="min-h-[90vh] flex items-center justify-center px-6 reveal">
+  <div class="w-full max-w-lg">
+    <div class="text-center mb-12">
+      <div class="w-20 h-20 bg-slate-900 text-white rounded-[24px] flex items-center justify-center text-3xl font-extrabold mx-auto mb-8 shadow-2xl shadow-slate-900/20">G</div>
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tighter">Acesso Administrativo</h1>
+      <p class="text-slate-500 font-medium mt-3 text-lg">Área restrita para equipe Growth Machine</p>
     </div>
 
-    <div class="bg-white border border-slate-200 p-8 rounded-3xl shadow-xl shadow-slate-200/50">
+    <div class="glass p-10 md:p-12 rounded-[48px] shadow-[0_40px_100px_-20px_oklch(0%_0_0_/_0.1)] border-white/60">
       <% if alert = flash[:alert] %>
-        <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg text-sm"><%= alert %></p>
+        <div class="mb-8 p-4 bg-red-500/10 border border-red-500/20 text-red-600 font-bold rounded-2xl text-sm text-center">
+          <%= alert %>
+        </div>
       <% end %>
 
       <%= form_with url: "/session", method: :post do |f| %>
-        <div class="space-y-6">
-          <div>
-            <%= f.label :email_address, "E-mail", class: "block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2" %>
-            <%= f.email_field :email_address, placeholder: "admin@growthmachine.local", class: "w-full p-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all", required: true %>
+        <div class="space-y-8">
+          <div class="group">
+            <%= f.label :email_address, "E-mail", class: "block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.email_field :email_address, placeholder: "admin@growthmachine.local", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50", required: true %>
           </div>
 
-          <div>
-            <%= f.label :password, "Senha", class: "block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2" %>
-            <%= f.password_field :password, placeholder: "--------", class: "w-full p-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all", required: true %>
+          <div class="group">
+            <%= f.label :password, "Senha", class: "block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.password_field :password, placeholder: "········", class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50", required: true %>
           </div>
 
-          <%= f.submit "Entrar no painel", class: "w-full py-4 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors cursor-pointer" %>
+          <div class="pt-2">
+            <%= f.submit "Entrar no painel", class: "w-full py-5 rounded-full btn-primary text-xl font-bold shadow-2xl shadow-blue-500/20 cursor-pointer" %>
+          </div>
         </div>
       <% end %>
     </div>
 
-    <p class="text-center mt-8 text-xs text-slate-400">
-      Esqueceu a senha? Entre em contato com o suporte tecnico.
+    <p class="text-center mt-10 text-sm text-slate-400 font-medium">
+      Esqueceu a senha? Entre em contato com o suporte técnico.
     </p>
   </div>
 </div>

@@ -1,91 +1,92 @@
-<header class="flex justify-between items-end mb-10">
+<header class="flex justify-between items-end mb-12">
   <div>
-    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
-    <p class="text-slate-500 text-sm">Bem-vindo ao centro de comando da Growth Machine.</p>
+    <h1 class="text-3xl font-extrabold text-white tracking-tighter leading-tight">Dashboard</h1>
+    <p class="text-slate-400 font-medium">Bem-vindo ao centro de comando da Growth Machine.</p>
   </div>
-  <div class="text-sm font-medium text-slate-500">
+  <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full border border-white/10">
     <%= Time.current.strftime("%d de %B, %Y") %>
   </div>
 </header>
 
 <!-- KPI Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-  <div class="admin-card p-6">
-    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Leads</div>
-    <div class="flex items-baseline gap-2">
-      <span class="text-3xl font-bold text-slate-900"><%= @leads_count %></span>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+  <div class="admin-card p-8 group">
+    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 group-hover:text-blue-400 transition-colors">Leads</div>
+    <div class="flex items-baseline gap-3">
+      <span class="text-4xl font-extrabold text-white tracking-tighter"><%= @leads_count %></span>
+      <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
     </div>
   </div>
 
-  <div class="admin-card p-6">
-    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Clientes</div>
-    <div class="flex items-baseline gap-2">
-      <span class="text-3xl font-bold text-slate-900"><%= @clients_count %></span>
-      <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Ativos</span>
+  <div class="admin-card p-8 group">
+    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 group-hover:text-green-400 transition-colors">Clientes</div>
+    <div class="flex items-baseline gap-3">
+      <span class="text-4xl font-extrabold text-white tracking-tighter"><%= @clients_count %></span>
+      <span class="text-[10px] font-bold text-green-400 bg-green-400/10 px-2 py-0.5 rounded-md border border-green-400/20">Ativos</span>
     </div>
   </div>
 
-  <div class="admin-card p-6">
-    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Pedidos Pendentes</div>
-    <div class="flex items-baseline gap-2">
-      <span class="text-3xl font-bold text-orange-600"><%= @pending_requests %></span>
-      <span class="text-xs font-bold text-slate-400">Aguardando</span>
+  <div class="admin-card p-8 group">
+    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 group-hover:text-orange-400 transition-colors">Pedidos Pendentes</div>
+    <div class="flex items-baseline gap-3">
+      <span class="text-4xl font-extrabold text-orange-400 tracking-tighter"><%= @pending_requests %></span>
+      <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Aguardando</span>
     </div>
   </div>
 
-  <div class="admin-card p-6">
-    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Conteudos Gerados</div>
-    <div class="flex items-baseline gap-2">
-      <span class="text-3xl font-bold text-slate-900"><%= @outputs_count %></span>
-      <span class="text-xs font-bold text-slate-400">Total</span>
+  <div class="admin-card p-8 group">
+    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 group-hover:text-purple-400 transition-colors">Conteudos Gerados</div>
+    <div class="flex items-baseline gap-3">
+      <span class="text-4xl font-extrabold text-white tracking-tighter"><%= @outputs_count %></span>
+      <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Total</span>
     </div>
   </div>
 </div>
 
 <!-- Recent Leads Table -->
-<div class="admin-card overflow-hidden">
-  <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-    <h3 class="font-bold text-slate-900 text-lg">Leads Recentes</h3>
-    <a href="<%= admin_leads_path %>" class="text-blue-600 text-sm font-bold hover:underline">Ver todos</a>
+<div class="admin-card overflow-hidden shadow-2xl">
+  <div class="p-8 border-b border-white/5 flex justify-between items-center bg-white/5">
+    <h3 class="font-bold text-white text-xl tracking-tight">Leads Recentes</h3>
+    <a href="<%= admin_leads_path %>" class="px-4 py-2 rounded-xl bg-white/5 text-slate-400 text-xs font-bold hover:bg-white/10 hover:text-white transition-all border border-white/5">Ver todos</a>
   </div>
 
   <div class="overflow-x-auto">
     <table class="w-full text-left">
       <thead>
-        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
-          <th class="px-6 py-4">Negocio</th>
-          <th class="px-6 py-4">Nicho</th>
-          <th class="px-6 py-4">Cidade</th>
-          <th class="px-6 py-4">Status</th>
-          <th class="px-6 py-4 text-right">Data</th>
+        <tr class="bg-white/[0.02] text-slate-500 text-[10px] uppercase tracking-[0.2em] font-bold">
+          <th class="px-8 py-5">Negocio</th>
+          <th class="px-8 py-5">Nicho</th>
+          <th class="px-8 py-5">Cidade</th>
+          <th class="px-8 py-5">Status</th>
+          <th class="px-8 py-5 text-right">Data</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-slate-100">
+      <tbody class="divide-y divide-white/5">
         <% @recent_leads.each do |lead| %>
-          <tr class="hover:bg-slate-50/50 transition-colors">
-            <td class="px-6 py-4">
-              <div class="font-bold text-slate-900 text-sm"><%= lead.business_name %></div>
-              <div class="text-xs text-slate-500"><%= lead.email %></div>
+          <tr class="hover:bg-white/[0.03] transition-colors group">
+            <td class="px-8 py-6">
+              <div class="font-bold text-white text-base group-hover:text-blue-400 transition-colors"><%= lead.business_name %></div>
+              <div class="text-xs text-slate-500 font-medium"><%= lead.email %></div>
             </td>
-            <td class="px-6 py-4">
-              <span class="text-xs text-slate-600 font-medium"><%= lead.niche&.humanize %></span>
+            <td class="px-8 py-6">
+              <span class="text-xs text-slate-400 font-bold uppercase tracking-widest"><%= lead.niche&.humanize %></span>
             </td>
-            <td class="px-6 py-4">
-              <span class="text-xs text-slate-600"><%= lead.city %></span>
+            <td class="px-8 py-6">
+              <span class="text-xs text-slate-500 font-medium"><%= lead.city %></span>
             </td>
-            <td class="px-6 py-4">
+            <td class="px-8 py-6">
               <% case lead.status %>
               <% when 'new' %>
-                <span class="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider">Novo</span>
+                <span class="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-blue-500/20">Novo</span>
               <% when 'contacted' %>
-                <span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 text-[10px] font-bold uppercase tracking-wider">Contatado</span>
+                <span class="px-3 py-1.5 rounded-lg bg-yellow-500/10 text-yellow-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-yellow-500/20">Contatado</span>
               <% when 'converted' %>
-                <span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider">Convertido</span>
+                <span class="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-green-500/20">Convertido</span>
               <% when 'lost' %>
-                <span class="px-2 py-1 rounded-full bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wider">Perdido</span>
+                <span class="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-red-500/20">Perdido</span>
               <% end %>
             </td>
-            <td class="px-6 py-4 text-right text-xs text-slate-400">
+            <td class="px-8 py-6 text-right text-xs text-slate-500 font-bold uppercase tabular-nums">
               <%= lead.created_at.strftime("%d/%m/%y") %>
             </td>
           </tr>

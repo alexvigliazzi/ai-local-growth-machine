@@ -1,17 +1,33 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
-
-  <h1 class="font-bold text-4xl">Forgot your password?</h1>
-
-  <%= form_with url: passwords_path, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow-sm rounded-md border border-gray-400 focus:outline-solid focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+<div class="min-h-[80vh] flex items-center justify-center px-6 reveal">
+  <div class="w-full max-w-lg">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-extrabold text-slate-900 tracking-tighter">Esqueceu a senha?</h1>
+      <p class="text-slate-500 font-medium mt-3 text-lg">Enviaremos as instruções de recuperação para o seu e-mail.</p>
     </div>
 
-    <div class="inline">
-      <%= form.submit "Email reset instructions", class: "w-full sm:w-auto text-center rounded-lg px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+    <div class="glass p-10 md:p-12 rounded-[48px] shadow-[0_40px_100px_-20px_oklch(0%_0_0_/_0.1)] border-white/60">
+      <% if alert = flash[:alert] %>
+        <div class="mb-8 p-4 bg-red-500/10 border border-red-500/20 text-red-600 font-bold rounded-2xl text-sm text-center">
+          <%= alert %>
+        </div>
+      <% end %>
+
+      <%= form_with url: passwords_path, class: "contents" do |f| %>
+        <div class="space-y-8">
+          <div class="group">
+            <%= f.label :email_address, "Seu e-mail", class: "block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3 group-focus-within:text-blue-600 transition-colors" %>
+            <%= f.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "admin@growthmachine.local", value: params[:email_address], class: "w-full p-5 rounded-[20px] border border-slate-200 focus:border-blue-500 focus:ring-[6px] focus:ring-blue-500/5 outline-none transition-all font-medium text-slate-900 bg-white/50" %>
+          </div>
+
+          <div class="pt-2">
+            <%= f.submit "Enviar instruções", class: "w-full py-5 rounded-full btn-primary text-xl font-bold shadow-2xl shadow-blue-500/20 cursor-pointer" %>
+          </div>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+
+    <div class="mt-10 text-center">
+      <%= link_to "Voltar para o login", new_session_path, class: "text-sm text-slate-400 font-bold hover:text-slate-900 transition-colors" %>
+    </div>
+  </div>
 </div>

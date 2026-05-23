@@ -1,40 +1,43 @@
 <div class="flex justify-between items-center mb-8">
-  <h1 class="text-2xl font-bold text-slate-900">Conteudos Produzidos</h1>
+  <h1 class="text-3xl font-extrabold text-white tracking-tighter leading-tight">Conteúdos Produzidos</h1>
+  <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full border border-white/10">
+    Total: <%= @content_outputs.count %>
+  </div>
 </div>
 
-<div class="admin-card overflow-hidden">
+<div class="admin-card overflow-hidden shadow-2xl">
   <div class="overflow-x-auto">
     <table class="w-full text-left">
       <thead>
-        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
-          <th class="px-6 py-4">Titulo</th>
-          <th class="px-6 py-4">Tipo</th>
-          <th class="px-6 py-4">Status</th>
-          <th class="px-6 py-4 text-right">Acoes</th>
+        <tr class="bg-white/[0.02] text-slate-500 text-[10px] uppercase tracking-[0.2em] font-bold">
+          <th class="px-8 py-5">Título</th>
+          <th class="px-8 py-5">Tipo</th>
+          <th class="px-8 py-5">Status</th>
+          <th class="px-8 py-5 text-right">Ações</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-slate-100">
+      <tbody class="divide-y divide-white/5">
         <% @content_outputs.each do |output| %>
-          <tr class="hover:bg-slate-50/50 transition-colors">
-            <td class="px-6 py-4">
-              <div class="font-bold text-slate-900 text-sm"><%= output.title %></div>
-              <div class="text-xs text-slate-500"><%= output.content_request.client.business_name %></div>
+          <tr class="hover:bg-white/[0.03] transition-colors group">
+            <td class="px-8 py-6">
+              <div class="font-bold text-white text-base group-hover:text-blue-400 transition-colors"><%= output.title %></div>
+              <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1"><%= output.content_request.client.business_name %></div>
             </td>
-            <td class="px-6 py-4 text-xs text-slate-600 font-medium">
+            <td class="px-8 py-6 text-xs text-slate-400 font-bold uppercase tracking-widest">
               <%= output.output_type&.humanize %>
             </td>
-            <td class="px-6 py-4">
-              <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
-                <%= case output.status
-                    when 'draft' then 'bg-slate-100 text-slate-600'
-                    when 'review' then 'bg-yellow-100 text-yellow-700'
-                    when 'approved' then 'bg-green-100 text-green-700'
-                    end %>">
-                <%= output.status&.humanize %>
-              </span>
+            <td class="px-8 py-6">
+              <% case output.status %>
+              <% when 'draft' %>
+                <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-400 text-[10px] font-bold uppercase tracking-[0.15em]">Rascunho</span>
+              <% when 'review' %>
+                <span class="px-3 py-1.5 rounded-lg bg-yellow-500/10 text-yellow-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-yellow-500/20">Revisão</span>
+              <% when 'approved' %>
+                <span class="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400 text-[10px] font-bold uppercase tracking-[0.15em] border border-green-500/20">Aprovado</span>
+              <% end %>
             </td>
-            <td class="px-6 py-4 text-right">
-              <%= link_to "Editar", edit_admin_content_output_path(output), class: "text-blue-600 font-bold text-xs hover:underline" %>
+            <td class="px-8 py-6 text-right">
+              <%= link_to "Editar", edit_admin_content_output_path(output), class: "text-blue-400 font-bold text-xs hover:text-blue-300 transition-colors" %>
             </td>
           </tr>
         <% end %>

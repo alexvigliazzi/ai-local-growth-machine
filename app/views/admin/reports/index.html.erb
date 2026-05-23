@@ -1,27 +1,30 @@
 <div class="flex justify-between items-center mb-8">
-  <h1 class="text-2xl font-bold text-slate-900">Relatorios Executivos</h1>
+  <h1 class="text-3xl font-extrabold text-white tracking-tighter leading-tight">Relatórios Executivos</h1>
+  <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full border border-white/10">
+    Total: <%= @reports.count %>
+  </div>
 </div>
 
-<div class="admin-card overflow-hidden">
+<div class="admin-card overflow-hidden shadow-2xl">
   <div class="overflow-x-auto">
     <table class="w-full text-left">
       <thead>
-        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-widest font-bold">
-          <th class="px-6 py-4">Titulo</th>
-          <th class="px-6 py-4">Cliente</th>
-          <th class="px-6 py-4">URL Publica</th>
-          <th class="px-6 py-4 text-right">Criado em</th>
+        <tr class="bg-white/[0.02] text-slate-500 text-[10px] uppercase tracking-[0.2em] font-bold">
+          <th class="px-8 py-5">Título</th>
+          <th class="px-8 py-5">Cliente</th>
+          <th class="px-8 py-5">URL Pública</th>
+          <th class="px-8 py-5 text-right">Criado em</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-slate-100">
+      <tbody class="divide-y divide-white/5">
         <% @reports.each do |report| %>
-          <tr class="hover:bg-slate-50/50 transition-colors">
-            <td class="px-6 py-4 font-bold text-slate-900 text-sm"><%= report.title %></td>
-            <td class="px-6 py-4 text-sm text-slate-600"><%= report.client.business_name %></td>
-            <td class="px-6 py-4">
-              <%= link_to "/r/#{report.token}", "/r/#{report.token}", target: "_blank", class: "text-blue-600 text-xs hover:underline" %>
+          <tr class="hover:bg-white/[0.03] transition-colors group">
+            <td class="px-8 py-6 font-bold text-white text-base group-hover:text-blue-400 transition-colors"><%= report.title %></td>
+            <td class="px-8 py-6 text-sm text-slate-400 font-medium"><%= report.client.business_name %></td>
+            <td class="px-8 py-6">
+              <%= link_to "/r/#{report.token}", "/r/#{report.token}", target: "_blank", class: "text-blue-400 text-xs font-bold hover:text-blue-300 transition-colors underline decoration-blue-500/30 underline-offset-4" %>
             </td>
-            <td class="px-6 py-4 text-right text-xs text-slate-400">
+            <td class="px-8 py-6 text-right text-[10px] text-slate-500 font-bold uppercase tabular-nums tracking-widest">
               <%= report.created_at.strftime("%d/%m/%y") %>
             </td>
           </tr>

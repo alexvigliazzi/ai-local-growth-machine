@@ -1,41 +1,49 @@
-<div class="mb-8 flex items-center gap-4">
-  <%= link_to admin_content_outputs_path, class: "p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors" do %>
+<div class="mb-12 flex items-center gap-6">
+  <%= link_to admin_content_outputs_path, class: "p-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 transition-all" do %>
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
   <% end %>
-  <h1 class="text-2xl font-bold text-slate-900">Editar Conteudo</h1>
+  <div>
+    <h1 class="text-3xl font-extrabold text-white tracking-tighter leading-tight">Editar Conteúdo</h1>
+    <p class="text-slate-500 font-medium">Refine o texto e altere o status da entrega.</p>
+  </div>
 </div>
 
-<div class="max-w-4xl">
-  <div class="admin-card p-8">
+<div class="max-w-5xl">
+  <div class="admin-card p-10 shadow-2xl">
     <%= form_with model: [:admin, @content_output] do |f| %>
-      <div class="space-y-6">
-        <div>
-          <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Cliente / Pedido</label>
-          <p class="text-sm font-bold text-slate-900"><%= @content_output.content_request.client.business_name %> — <%= @content_output.content_request.objective.truncate(60) %></p>
+      <div class="space-y-8">
+        <div class="p-6 bg-white/5 border border-white/10 rounded-2xl">
+          <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">Cliente / Pedido</label>
+          <p class="text-base font-bold text-white tracking-tight"><%= @content_output.content_request.client.business_name %> — <%= @content_output.content_request.objective.truncate(80) %></p>
         </div>
 
-        <div class="grid grid-cols-2 gap-6">
-          <div>
-            <%= f.label :title, "Titulo do Conteudo", class: "block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2" %>
-            <%= f.text_field :title, class: "w-full p-3 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="group">
+            <%= f.label :title, "Título do Conteúdo", class: "block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3 group-focus-within:text-blue-400 transition-colors" %>
+            <%= f.text_field :title, class: "w-full p-4 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all" %>
           </div>
-          <div>
-            <%= f.label :status, "Status", class: "block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2" %>
-            <%= f.select :status,
-                options_for_select([['Rascunho', 'draft'], ['Em Revisao', 'review'], ['Aprovado', 'approved']], @content_output.status),
-                {},
-                class: "w-full p-3 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500/20 outline-none appearance-none bg-slate-50" %>
+          <div class="group">
+            <%= f.label :status, "Status", class: "block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3 group-focus-within:text-blue-400 transition-colors" %>
+            <div class="relative">
+              <%= f.select :status,
+                  options_for_select([['Rascunho', 'draft'], ['Em Revisão', 'review'], ['Aprovado', 'approved']], @content_output.status),
+                  {},
+                  class: "w-full p-4 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none" %>
+              <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-30">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div>
-          <%= f.label :content, "Texto do Conteudo", class: "block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2" %>
-          <%= f.text_area :content, rows: 12, class: "w-full p-4 rounded-xl border border-slate-200 text-sm font-mono leading-relaxed focus:ring-2 focus:ring-blue-500/20 outline-none" %>
+        <div class="group">
+          <%= f.label :content, "Texto do Conteúdo", class: "block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3 group-focus-within:text-blue-400 transition-colors" %>
+          <%= f.text_area :content, rows: 15, class: "w-full p-6 rounded-xl bg-white/5 border border-white/10 text-slate-300 text-sm font-mono leading-relaxed focus:ring-4 focus:ring-blue-500/10 outline-none transition-all resize-y" %>
         </div>
 
-        <div class="pt-4 flex gap-4">
-          <%= f.submit "Salvar Conteudo", class: "px-8 py-3 bg-slate-900 text-white font-bold rounded-lg cursor-pointer" %>
-          <%= link_to "Cancelar", admin_content_outputs_path, class: "px-8 py-3 border border-slate-200 text-slate-600 font-bold rounded-lg" %>
+        <div class="pt-6 flex gap-4 border-t border-white/5">
+          <%= f.submit "Salvar Conteúdo", class: "px-10 py-4 bg-blue-600 text-white font-bold rounded-xl shadow-xl shadow-blue-500/20 hover:bg-blue-50 transition-all cursor-pointer" %>
+          <%= link_to "Cancelar", admin_content_output_path(@content_output), class: "px-10 py-4 bg-white/5 border border-white/10 text-slate-300 font-bold rounded-xl hover:bg-white/10 transition-all" %>
         </div>
       </div>
     <% end %>

@@ -13,25 +13,48 @@
       :root {
         --bg: oklch(99% 0.002 240);
         --surface: oklch(100% 0 0);
-        --fg: oklch(18% 0.012 250);
-        --muted: oklch(54% 0.012 250);
-        --border: oklch(92% 0.005 250);
-        --accent: oklch(58% 0.18 255);
-        --font-display: 'Inter', -apple-system, system-ui, sans-serif;
+        --fg: oklch(15% 0.01 250);
+        --muted: oklch(55% 0.01 250);
+        --border: oklch(93% 0.005 250);
+        --accent: oklch(60% 0.16 250);
+        --accent-soft: oklch(60% 0.16 250 / 0.1);
+        --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Icons", system-ui, sans-serif;
+        --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+        --font-mono: "SF Mono", "JetBrains Mono", Menlo, monospace;
+        --radius-xl: 32px;
+        --radius-lg: 24px;
+        --radius-md: 16px;
+        --radius-sm: 12px;
+        --shadow-soft: 0 4px 24px -1px oklch(0% 0 0 / 0.04), 0 8px 16px -2px oklch(0% 0 0 / 0.02);
+        --shadow-elevated: 0 20px 40px -12px oklch(0% 0 0 / 0.1);
       }
 
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: var(--font-body);
         color: var(--fg);
-        background: linear-gradient(180deg, var(--bg), #f0f4f8);
+        background-color: var(--bg);
         min-height: 100vh;
+        transition: background-color 0.5s ease;
       }
 
       .glass {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: oklch(100% 0 0 / 72%);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
         border: 1px solid var(--border);
+      }
+
+      nav.glass {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      nav.glass.scrolled {
+        background: oklch(100% 0 0 / 85%);
+        box-shadow: 0 1px 0 var(--border), 0 4px 24px oklch(0% 0 0 / 0.04);
       }
 
       .cinematic-bg {
@@ -39,24 +62,77 @@
         inset: -10% -5%;
         pointer-events: none;
         z-index: -1;
-        opacity: 0.6;
+        opacity: 0.4;
         background:
-          radial-gradient(420px 280px at 18% 20%, oklch(85% 0.12 250 / 15%), transparent 70%),
-          radial-gradient(500px 360px at 80% 12%, oklch(80% 0.14 280 / 12%), transparent 70%);
+          radial-gradient(420px 280px at 18% 20%, oklch(85% 0.12 250 / 10%), transparent 70%),
+          radial-gradient(500px 360px at 80% 12%, oklch(80% 0.14 280 / 8%), transparent 70%);
       }
 
       .btn-primary {
         background: var(--accent);
         color: white;
-        transition: all 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
       }
 
       .btn-primary:hover {
         filter: brightness(1.1);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px oklch(58% 0.18 255 / 25%);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px oklch(60% 0.16 250 / 20%);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      /* Scroll reveal base classes */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
       }
     </style>
+    <script>
+      document.addEventListener('turbo:load', () => {
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+          });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Nav glassmorphism on scroll
+        const nav = document.querySelector('nav.glass');
+        if (nav) {
+          const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+          window.addEventListener('scroll', onScroll, { passive: true });
+          onScroll();
+        }
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+          const btn = item.querySelector('.faq-btn');
+          const body = item.querySelector('.faq-body');
+          const icon = item.querySelector('.faq-icon');
+          if (!btn || !body) return;
+          body.style.maxHeight = '0';
+          body.style.overflow = 'hidden';
+          body.style.transition = 'max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease';
+          body.style.opacity = '0';
+          btn.addEventListener('click', () => {
+            const open = item.classList.toggle('open');
+            body.style.maxHeight = open ? body.scrollHeight + 'px' : '0';
+            body.style.opacity = open ? '1' : '0';
+            if (icon) icon.style.transform = open ? 'rotate(180deg)' : 'rotate(0)';
+          });
+        });
+      });
+    </script>
   </head>
 
   <body class="antialiased">

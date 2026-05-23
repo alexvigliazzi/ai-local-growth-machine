@@ -1,38 +1,41 @@
-<div class="mb-8 flex items-center gap-4">
-  <%= link_to admin_clients_path, class: "p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors" do %>
+<div class="mb-12 flex items-center gap-6">
+  <%= link_to admin_clients_path, class: "p-3 rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 transition-all" do %>
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
   <% end %>
-  <h1 class="text-2xl font-bold text-slate-900">Cliente: <%= @client.business_name %></h1>
+  <div>
+    <h1 class="text-3xl font-extrabold text-white tracking-tighter leading-tight">Cliente: <%= @client.business_name %></h1>
+    <p class="text-slate-500 font-medium">Gestão completa do perfil e histórico do cliente.</p>
+  </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-  <div class="lg:col-span-2 space-y-8">
-    <div class="admin-card p-8">
-      <div class="flex justify-between items-start mb-6">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest border-b pb-2 flex-1 mr-4">Perfil do Cliente</h3>
-        <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold uppercase"><%= @client.plan&.humanize %></span>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+  <div class="lg:col-span-2 space-y-10">
+    <div class="admin-card p-10">
+      <div class="flex justify-between items-start mb-8 border-b border-white/5 pb-6">
+        <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Perfil do Cliente</h3>
+        <span class="px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-[0.15em] border border-purple-500/20 bg-purple-500/10 text-purple-400"><%= @client.plan&.humanize %></span>
       </div>
-      <div class="grid grid-cols-2 gap-y-6">
-        <div><label class="block text-xs text-slate-400">Cidade</label><p class="font-bold"><%= @client.city %></p></div>
-        <div><label class="block text-xs text-slate-400">Nicho</label><p class="font-bold"><%= @client.niche&.humanize %></p></div>
-        <div><label class="block text-xs text-slate-400">Contato</label><p class="font-bold"><%= @client.contact_name %></p></div>
-        <div><label class="block text-xs text-slate-400">WhatsApp</label><p class="font-bold"><%= @client.whatsapp %></p></div>
+      <div class="grid grid-cols-2 gap-y-8">
+        <div><label class="block text-xs text-slate-500 font-bold uppercase tracking-widest mb-2">Cidade</label><p class="text-lg font-bold text-white tracking-tight"><%= @client.city %></p></div>
+        <div><label class="block text-xs text-slate-500 font-bold uppercase tracking-widest mb-2">Nicho</label><p class="text-lg font-bold text-white tracking-tight"><%= @client.niche&.humanize %></p></div>
+        <div><label class="block text-xs text-slate-500 font-bold uppercase tracking-widest mb-2">Contato</label><p class="text-lg font-bold text-white tracking-tight"><%= @client.contact_name %></p></div>
+        <div><label class="block text-xs text-slate-500 font-bold uppercase tracking-widest mb-2">WhatsApp</label><p class="text-lg font-bold text-white tracking-tight tabular-nums"><%= @client.whatsapp %></p></div>
       </div>
     </div>
 
-    <!-- Pedidos do Cliente -->
-    <div class="admin-card">
-      <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-        <h3 class="font-bold text-slate-900">Historico de Pedidos</h3>
+    <!-- Histórico de Pedidos -->
+    <div class="admin-card overflow-hidden">
+      <div class="p-8 border-b border-white/5 flex justify-between items-center bg-white/5">
+        <h3 class="font-bold text-white text-xl tracking-tight">Histórico de Pedidos</h3>
       </div>
-      <div class="divide-y divide-slate-100">
+      <div class="divide-y divide-white/5">
         <% @client.content_requests.each do |req| %>
-          <div class="p-6 flex justify-between items-center">
+          <div class="p-8 flex justify-between items-center hover:bg-white/[0.03] transition-colors group">
             <div>
-              <div class="font-bold text-sm"><%= req.objective.truncate(60) %></div>
-              <div class="text-xs text-slate-400"><%= req.created_at.strftime("%d/%m/%Y") %></div>
+              <div class="font-bold text-white text-base group-hover:text-blue-400 transition-colors"><%= req.objective.truncate(60) %></div>
+              <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1"><%= req.created_at.strftime("%d/%m/%Y") %></div>
             </div>
-            <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-slate-100 text-slate-600">
+            <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-400 text-[10px] font-bold uppercase tracking-[0.15em]">
               <%= req.status&.humanize %>
             </span>
           </div>
@@ -41,9 +44,9 @@
     </div>
   </div>
 
-  <div class="admin-card p-6">
-    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Novo Pedido</h3>
-    <p class="text-xs text-slate-500 mb-6 leading-relaxed italic">Inicie um novo ciclo de conteudo para este cliente.</p>
-    <button class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-900/10">Criar Content Request</button>
+  <div class="admin-card p-8">
+    <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-6">Novo Pedido</h3>
+    <p class="text-sm text-slate-400 mb-8 leading-relaxed italic">Inicie um novo ciclo de conteúdo personalizado para este cliente.</p>
+    <button class="w-full py-4 bg-blue-600 text-white font-bold rounded-xl shadow-xl shadow-blue-500/20 hover:bg-blue-500 transition-colors">Criar Content Request</button>
   </div>
 </div>
